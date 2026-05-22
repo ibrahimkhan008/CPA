@@ -8,6 +8,8 @@ import { Footer } from "./components/Footer";
 import { ClickSparkProvider } from "@/components/ui/ClickSparkProvider";
 import { OrganizationJsonLd } from "@/components/ui/OrganizationJsonLd";
 import { VercelSpeedInsights } from "@/components/ui/VercelSpeedInsights";
+import { ToastProvider } from "@/components/ui/toast";
+import { DevBanner } from "@/components/ui/DevBanner";
 import { ClarityProvider } from "@/components/ui/ClarityProvider";
 import "./globals.css";
 
@@ -42,25 +44,28 @@ export default function RootLayout({
         </noscript>
 
         <ThemeProvider>
-          <ClickSparkProvider>
-            <OrganizationJsonLd />
-            <VercelSpeedInsights />
-            <ClarityProvider />
-            <Script id="gtm-script" strategy="afterInteractive">
-              {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          <ToastProvider>
+            <DevBanner />
+            <ClickSparkProvider>
+              <OrganizationJsonLd />
+              <VercelSpeedInsights />
+              <ClarityProvider />
+              <Script id="gtm-script" strategy="afterInteractive">
+                {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-MMVHCZ7Q');`}
-            </Script>
-            <Navbar />
-            <VercelAnalytics />
+              </Script>
+              <Navbar />
+              <VercelAnalytics />
 
-            <main id="main-content" className="flex-1">{children}</main>
+              <main id="main-content" className="flex-1">{children}</main>
 
-            <FooterLogoLoop />
-            <Footer />
-          </ClickSparkProvider>
+              <FooterLogoLoop />
+              <Footer />
+            </ClickSparkProvider>
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>
