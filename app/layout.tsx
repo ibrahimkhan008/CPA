@@ -8,6 +8,7 @@ import { Footer } from "./components/Footer";
 import { ClickSparkProvider } from "@/components/ui/ClickSparkProvider";
 import { OrganizationJsonLd } from "@/components/ui/OrganizationJsonLd";
 import { VercelSpeedInsights } from "@/components/ui/VercelSpeedInsights";
+import { ClarityProvider } from "@/components/ui/ClarityProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function RootLayout({
           <ClickSparkProvider>
             <OrganizationJsonLd />
             <VercelSpeedInsights />
+            <ClarityProvider />
             <Script
               strategy="afterInteractive"
               src="https://www.googletagmanager.com/gtag/js?id=G-BJWHTH95K6"
