@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import Navbar from "./components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { VercelAnalytics } from "@/components/ui/VercelAnalytics";
@@ -34,6 +35,16 @@ export default function RootLayout({
           <ClickSparkProvider>
             <OrganizationJsonLd />
             <VercelSpeedInsights />
+            <Script
+              strategy="afterInteractive"
+              src="https://www.googletagmanager.com/gtag/js?id=G-BJWHTH95K6"
+            />
+            <Script id="gtag-config" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-BJWHTH95K6');`}
+            </Script>
             <Navbar />
             <VercelAnalytics />
 
