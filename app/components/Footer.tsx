@@ -79,6 +79,7 @@ const footerLinks = [
   { href: "/webinar", label: "Free Webinar" },
   { href: "/terms", label: "Terms" },
   { href: "/privacy", label: "Privacy" },
+  { href: "/refund", label: "Refund Policy" },
   { href: "/faq", label: "FAQ" },
 ];
 
