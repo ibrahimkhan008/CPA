@@ -58,6 +58,7 @@ export function FooterLogoLoop() {
             gap={64}
             pauseOnHover
             fadeOut
+            fadeOutColor="rgb(250,250,250)"
             scaleOnHover
             ariaLabel="Trusted CPA networks"
             className="overflow-x-hidden"

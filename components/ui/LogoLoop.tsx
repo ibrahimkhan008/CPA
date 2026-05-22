@@ -176,7 +176,7 @@ interface LogoLoopProps {
   fadeOut?: boolean;
   fadeOutColor?: string;
   scaleOnHover?: boolean;
-  renderItem?: (item: LogoItem, key: React.Key) => React.ReactNode;
+  renderItem?: (item: LogoItem, key: React.Key, itemIndex?: number) => React.ReactNode;
   ariaLabel?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -207,6 +207,9 @@ export default function LogoLoop({
   const [seqHeight, setSeqHeight] = useState(0);
   const [copyCount, setCopyCount] = useState(ANIMATION_CONFIG.MIN_COPIES);
   const [isHovered, setIsHovered] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
+  const [itemWidths, setItemWidths] = useState<number[]>([]);
 
   const effectiveHoverSpeed = useMemo(() => {
     if (hoverSpeed !== undefined) return hoverSpeed;
@@ -280,7 +283,7 @@ export default function LogoLoop({
     if (effectiveHoverSpeed !== undefined) setIsHovered(false);
   }, [effectiveHoverSpeed]);
 
-  const renderLogoItem = useCallback((item: LogoItem, key: React.Key) => {
+  const renderLogoItem = useCallback((item: LogoItem, key: React.Key, itemIndex?: number) => {
     if (renderItem) {
       return (
         <li
@@ -292,7 +295,7 @@ export default function LogoLoop({
           key={key}
           role="listitem"
         >
-          {renderItem(item, key)}
+          {renderItem(item, key, itemIndex)}
         </li>
       );
     }
@@ -301,9 +304,11 @@ export default function LogoLoop({
       <span
         className={cx(
           'inline-flex items-center',
-          scaleOnHover && 'transition-transform duration-300 ease-in-out group-hover:scale-[1.2]',
+          scaleOnHover && hoveredKey === key && 'scale-[1.2] transition-transform duration-300',
         )}
         aria-hidden={!!item.href && !item.ariaLabel}
+        onMouseEnter={() => setHoveredKey(String(key))}
+        onMouseLeave={() => setHoveredKey(null)}
       >
         {item.node}
       </span>
@@ -312,8 +317,10 @@ export default function LogoLoop({
         className={cx(
           'h-[var(--logoloop-logoHeight)] w-auto block object-contain',
           '[-webkit-user-drag:none] pointer-events-none',
-          scaleOnHover && 'transition-transform duration-300 ease-in-out group-hover:scale-[1.2]',
+          scaleOnHover && hoveredKey === key && 'scale-[1.2] transition-transform duration-300',
         )}
+        onMouseEnter={() => setHoveredKey(String(key))}
+        onMouseLeave={() => setHoveredKey(null)}
         src={(item as LogoItemImage).src}
         srcSet={(item as LogoItemImage).srcSet}
         sizes={(item as LogoItemImage).sizes}
@@ -368,7 +375,7 @@ export default function LogoLoop({
           aria-hidden={copyIndex > 0}
           ref={copyIndex === 0 ? seqRef : undefined}
         >
-          {logos.map((item, itemIndex) => renderLogoItem(item, `${copyIndex}-${itemIndex}`))}
+          {logos.map((item, itemIndex) => renderLogoItem(item, `${copyIndex}-${itemIndex}`, itemIndex))}
         </ul>
       )),
     [copyCount, logos, renderLogoItem, isVertical],
