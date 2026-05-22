@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Navbar from "./components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { VercelAnalytics } from "@/components/ui/VercelAnalytics";
-import { Footer } from "./components/Footer";
 import { FooterLogoLoop } from "./components/Footer";
+import { Footer } from "./components/Footer";
+import { ClickSparkProvider } from "@/components/ui/ClickSparkProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -28,13 +29,15 @@ export default function RootLayout({
         </a>
 
         <ThemeProvider>
-          <Navbar />
-          <VercelAnalytics />
+          <ClickSparkProvider>
+            <Navbar />
+            <VercelAnalytics />
 
-          <main id="main-content" className="flex-1">{children}</main>
+            <main id="main-content" className="flex-1">{children}</main>
 
-          <FooterLogoLoop />
-          <Footer />
+            <FooterLogoLoop />
+            <Footer />
+          </ClickSparkProvider>
         </ThemeProvider>
       </body>
     </html>
