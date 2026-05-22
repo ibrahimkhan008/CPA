@@ -1,6 +1,6 @@
 "use client";
 
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 export function VercelSpeedInsights() {
   return <SpeedInsights />;
