@@ -53,11 +53,12 @@ export function FooterLogoLoop() {
           <LogoLoop
             logos={networkLogos}
             speed={60}
-            direction="left"
+            direction="right"
             logoHeight={48}
             gap={64}
             pauseOnHover
             fadeOut
+            scaleOnHover
             ariaLabel="Trusted CPA networks"
             className="overflow-x-hidden"
           />

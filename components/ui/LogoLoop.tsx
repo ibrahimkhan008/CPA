@@ -287,7 +287,7 @@ export default function LogoLoop({
           className={cx(
             'flex-none leading-[1]',
             isVertical ? 'mb-[var(--logoloop-gap)]' : 'mr-[var(--logoloop-gap)]',
-            scaleOnHover && 'overflow-visible group/item',
+            scaleOnHover && 'overflow-visible group',
           )}
           key={key}
           role="listitem"
@@ -301,7 +301,7 @@ export default function LogoLoop({
       <span
         className={cx(
           'inline-flex items-center',
-          scaleOnHover && 'transition-transform duration-300 group-hover/item:scale-120',
+          scaleOnHover && 'transition-transform duration-300 ease-in-out group-hover:scale-[1.2]',
         )}
         aria-hidden={!!item.href && !item.ariaLabel}
       >
@@ -312,7 +312,7 @@ export default function LogoLoop({
         className={cx(
           'h-[var(--logoloop-logoHeight)] w-auto block object-contain',
           '[-webkit-user-drag:none] pointer-events-none',
-          scaleOnHover && 'transition-transform duration-300 group-hover/item:scale-120',
+          scaleOnHover && 'transition-transform duration-300 ease-in-out group-hover:scale-[1.2]',
         )}
         src={(item as LogoItemImage).src}
         srcSet={(item as LogoItemImage).srcSet}
@@ -348,7 +348,7 @@ export default function LogoLoop({
         className={cx(
           'flex-none leading-[1]',
           isVertical ? 'mb-[var(--logoloop-gap)]' : 'mr-[var(--logoloop-gap)]',
-          scaleOnHover && 'overflow-visible group/item',
+          scaleOnHover && 'overflow-visible group',
         )}
         key={key}
         role="listitem"
