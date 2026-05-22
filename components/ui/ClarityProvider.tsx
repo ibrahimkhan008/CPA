@@ -4,15 +4,12 @@ import Script from "next/script";
 
 export function ClarityProvider() {
   return (
-    <>
-      <Script id="clarity-script" strategy="afterInteractive">
-        {`(function(c,l,a,r,t,z,s,y){
-c[t]=c[t]||[];c[t].push({'gtm.start':new Date().getTime(),event:'z.x.x'});
-s=a.createElement(r);y=a.getElementsByTagName(r)[0];
-s.async=true;s.src='https://www.clarity.ms/tag/'+z;
-y.parentNode.insertBefore(s,y);
-})(window,document,'script','clarity','wva4q6ngbq');`}
-      </Script>
-    </>
+    <Script id="clarity-script" strategy="afterInteractive">
+      {`(function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wva4q6ngbq");`}
+    </Script>
   );
 }
