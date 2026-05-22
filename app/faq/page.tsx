@@ -108,11 +108,15 @@ export default function VoidZeroFAQPage() {
   const [search, setSearch] = useState("");
 
   const filteredFaqs = useMemo(() => {
-    return faqs.filter(
-      (faq) =>
-        faq.category === activeCategory &&
-        faq.question.toLowerCase().includes(search.toLowerCase())
-    );
+    const searchLower = search.toLowerCase();
+    if (searchLower) {
+      return faqs.filter(
+        (faq) =>
+          faq.question.toLowerCase().includes(searchLower) ||
+          faq.answer.toLowerCase().includes(searchLower)
+      );
+    }
+    return faqs.filter((faq) => faq.category === activeCategory);
   }, [activeCategory, search]);
 
   return (
