@@ -90,7 +90,7 @@ export const shippingData = {
       title: "Questions",
       content: [
         "If you have questions about your purchase or delivery, contact us before completing your purchase.",
-        "For delivery-related support, email: support@voidzero-cpa.com",
+        "For delivery-related support, email: support@cpahustler.com",
         "Include your order number and the email address used at checkout in all inquiries.",
       ],
     },

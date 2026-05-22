@@ -124,8 +124,8 @@ ALL ROUTES / PAGES
   Registration form with name/email/phone/interest fields
   CTA section (neutral bg)
 
-/consultation (app/consultation/page.tsx) — 1-on-1 Consultation ₹149
-  Hero with "₹149 PER SESSION" heading
+/consultation (app/consultation/page.tsx) — 1-on-1 Consultation ₹499
+  Hero with "₹499 PER SESSION" heading
   6 benefits grid (card-hover cells)
   Booking form section (dark bg, vertical-lines)
   Payment success preview section

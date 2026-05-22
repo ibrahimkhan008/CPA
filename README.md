@@ -17,7 +17,7 @@ CPA affiliate marketing website for Mr. Void / DW Methods. Built with Next.js 16
 | `/` | Home — hero, CPA intro, curriculum preview, pricing, mentor, CTA |
 | `/cpa` | What is CPA — intro to CPA affiliate marketing |
 | `/curriculum` | Full curriculum — modules, methods, systems |
-| `/pricing` | Pricing — Basic (₹2,500), Premium (₹10,000), Elite (₹20,000) |
+| `/pricing` | Pricing — Basic (₹5,000), Premium (₹10,000), Elite (₹20,000) |
 | `/mentor` | Mentor profile — Mr. Void bio, stats, timeline |
 | `/webinar` | Free webinar registration |
 | `/consultation` | Book a consultation |

@@ -121,7 +121,7 @@ export const refundData = {
         "If you have questions about this policy or your purchase, contact us before buying—not after.",
         "Our team is available to answer questions and help you determine if a purchase is right for you.",
         "Do not purchase if you are uncertain. Ask questions first.",
-        "For billing inquiries, contact: support@voidzero-cpa.com",
+        "For billing inquiries, contact: support@cpahustler.com",
       ],
     },
   ],
