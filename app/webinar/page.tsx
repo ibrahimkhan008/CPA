@@ -5,6 +5,14 @@ export const metadata: Metadata = {
   title: "Free CPA Webinar — VoidZero",
   description:
     "Join the free VoidZero CPA webinar and learn how to build organic funnels, drive traffic, and earn with ethical CPA affiliate marketing.",
+  alternates: { canonical: "https://cpahustler.com/webinar" },
+  openGraph: {
+    title: "Free CPA Webinar — VoidZero",
+    description:
+      "Join the free VoidZero CPA webinar and learn how to build organic funnels, drive traffic, and earn with ethical CPA affiliate marketing.",
+    type: "website",
+    url: "https://cpahustler.com/webinar",
+  },
 };
 
 const webinarTopics = [

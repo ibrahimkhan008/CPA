@@ -127,7 +127,7 @@ export default function ConsultationForm() {
               Consultation Fee
             </div>
 
-            <div className="display-font text-6xl font-bold">₹149</div>
+            <div className="display-font text-6xl font-bold">₹499</div>
           </div>
 
           <button

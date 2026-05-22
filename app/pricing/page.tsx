@@ -5,6 +5,14 @@ export const metadata: Metadata = {
   title: "Pricing — VoidZero CPA",
   description:
     "Choose your VoidZero CPA plan. From 45-day access to 1-year elite mentorship — find the right path for you.",
+  alternates: { canonical: "https://cpahustler.com/pricing" },
+  openGraph: {
+    title: "Pricing — VoidZero CPA",
+    description:
+      "Choose your VoidZero CPA plan. From 45-day access to 1-year elite mentorship — find the right path for you.",
+    type: "website",
+    url: "https://cpahustler.com/pricing",
+  },
 };
 
 const plans = [

@@ -5,6 +5,14 @@ export const metadata: Metadata = {
   title: "Terms and Conditions — VoidZero CPA",
   description:
     "Read the Terms and Conditions for VoidZero CPA, operated by Mr. Void / DW Methods.",
+  alternates: { canonical: "https://cpahustler.com/terms" },
+  openGraph: {
+    title: "Terms and Conditions — VoidZero CPA",
+    description:
+      "Read the Terms and Conditions for VoidZero CPA, operated by Mr. Void / DW Methods.",
+    type: "website",
+    url: "https://cpahustler.com/terms",
+  },
 };
 
 export const termsData = {
@@ -28,7 +36,7 @@ export const termsData = {
       title: "2. Services Offered",
       content: [
         "CPA Hustler provides educational content, webinars, one-on-one consultations, recorded courses, live classes, and mentorship programs related to CPA (Cost Per Action) affiliate marketing.",
-        "Services include but are not limited to: free webinars, paid consultation sessions (₹149), recorded courses (₹2,500), 3-month premium mentorship (₹10,000), and 1-year elite mentorship (₹20,000).",
+        "Services include but are not limited to: free webinars, paid consultation sessions (₹499), recorded courses (₹5,000), 3-month premium mentorship (₹10,000), and 1-year elite mentorship (₹20,000).",
         "All services are digital in nature and delivered electronically via WhatsApp, Telegram, email, or online platforms.",
         "Access to private communities, groups, and course materials is granted upon successful payment verification.",
       ],

@@ -5,7 +5,15 @@ import ConsultationFormLoader from "../components/ConsultationFormLoader";
 export const metadata: Metadata = {
   title: "1-on-1 CPA Consultation — VoidZero",
   description:
-    "Book a 1-on-1 CPA mentorship session with Mr. Void. ₹149 per session — beginner guidance, funnel review, traffic strategy, and WhatsApp support.",
+    "Book a 1-on-1 CPA mentorship session with Mr. Void. ₹499 per session — beginner guidance, funnel review, traffic strategy, and WhatsApp support.",
+  alternates: { canonical: "https://cpahustler.com/consultation" },
+  openGraph: {
+    title: "1-on-1 CPA Consultation — VoidZero",
+    description:
+      "Book a 1-on-1 CPA mentorship session with Mr. Void. ₹499 per session — beginner guidance, funnel review, traffic strategy, and WhatsApp support.",
+    type: "website",
+    url: "https://cpahustler.com/consultation",
+  },
 };
 
 const benefits = [
@@ -69,7 +77,7 @@ export default function ConsultationPage() {
               </div>
 
               <h1 className="display-font text-[5rem] md:text-[10rem] leading-[0.82] tracking-[-0.06em] font-bold uppercase mb-10">
-                ₹149
+                ₹499
                 <br />
                 PER
                 <br />

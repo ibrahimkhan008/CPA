@@ -1,6 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { PointerHighlight } from "@/components/ui/pointer-highlight";
+
+export const metadata: Metadata = {
+  title: "VoidZero CPA — Free CPA Affiliate Marketing Webinar",
+  description:
+    "Learn ethical CPA affiliate marketing with VoidZero. Build organic funnels, generate daily commissions, and scale with free traffic methods. Free webinar with Mr. Void.",
+  alternates: { canonical: "https://cpahustler.com" },
+  openGraph: {
+    title: "VoidZero CPA — Free CPA Affiliate Marketing Webinar",
+    description:
+      "Learn ethical CPA affiliate marketing with VoidZero. Build organic funnels, generate daily commissions, and scale with free traffic methods.",
+    type: "website",
+    url: "https://cpahustler.com",
+  },
+};
 
 export default function HomePage() {
   return (

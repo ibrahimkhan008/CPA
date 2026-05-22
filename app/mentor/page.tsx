@@ -5,6 +5,14 @@ export const metadata: Metadata = {
   title: "About Mr. Void — VoidZero CPA",
   description:
     "Meet Mr. Void, founder of VoidZero CPA. Learn about his background, results, and approach to ethical CPA affiliate marketing.",
+  alternates: { canonical: "https://cpahustler.com/mentor" },
+  openGraph: {
+    title: "About Mr. Void — VoidZero CPA",
+    description:
+      "Meet Mr. Void, founder of VoidZero CPA. Learn about his background, results, and approach to ethical CPA affiliate marketing.",
+    type: "website",
+    url: "https://cpahustler.com/mentor",
+  },
 };
 
 const highlights = [

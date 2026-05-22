@@ -5,6 +5,14 @@ export const metadata: Metadata = {
   title: "What is CPA? — VoidZero CPA",
   description:
     "Discover what CPA affiliate marketing is, how it works, and which CPA networks you can join to start earning.",
+  alternates: { canonical: "https://cpahustler.com/cpa" },
+  openGraph: {
+    title: "What is CPA? — VoidZero CPA",
+    description:
+      "Discover what CPA affiliate marketing is, how it works, and which CPA networks you can join to start earning.",
+    type: "website",
+    url: "https://cpahustler.com/cpa",
+  },
 };
 
 export default function CPAPage() {

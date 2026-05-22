@@ -5,6 +5,7 @@ import { VercelAnalytics } from "@/components/ui/VercelAnalytics";
 import { FooterLogoLoop } from "./components/Footer";
 import { Footer } from "./components/Footer";
 import { ClickSparkProvider } from "@/components/ui/ClickSparkProvider";
+import { OrganizationJsonLd } from "@/components/ui/OrganizationJsonLd";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -30,6 +31,7 @@ export default function RootLayout({
 
         <ThemeProvider>
           <ClickSparkProvider>
+            <OrganizationJsonLd />
             <Navbar />
             <VercelAnalytics />
 

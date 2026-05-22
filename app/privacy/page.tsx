@@ -5,6 +5,14 @@ export const metadata: Metadata = {
   title: "Privacy Policy — VoidZero CPA",
   description:
     "Read the Privacy Policy for VoidZero CPA, operated by Mr. Void / DW Methods.",
+  alternates: { canonical: "https://cpahustler.com/privacy" },
+  openGraph: {
+    title: "Privacy Policy — VoidZero CPA",
+    description:
+      "Read the Privacy Policy for VoidZero CPA, operated by Mr. Void / DW Methods.",
+    type: "website",
+    url: "https://cpahustler.com/privacy",
+  },
 };
 
 export const privacyData = {

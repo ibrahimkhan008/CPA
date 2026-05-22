@@ -1,4 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "About Mr. Void — VoidZero CPA",
+  description:
+    "Meet Mr. Void, founder of VoidZero CPA. Learn about his background, results, and approach to ethical CPA affiliate marketing.",
+  alternates: { canonical: "https://cpahustler.com/about" },
+  openGraph: {
+    title: "About Mr. Void — VoidZero CPA",
+    description:
+      "Meet Mr. Void, founder of VoidZero CPA. Learn about his background, results, and approach to ethical CPA affiliate marketing.",
+    type: "website",
+    url: "https://cpahustler.com/about",
+  },
+};
 
 const stats = [
   { value: "5+", label: "Years Experience" },

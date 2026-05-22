@@ -5,6 +5,14 @@ export const metadata: Metadata = {
   title: "Curriculum — VoidZero CPA",
   description:
     "Explore the full VoidZero CPA curriculum covering organic traffic, funnel building, and monetization systems.",
+  alternates: { canonical: "https://cpahustler.com/curriculum" },
+  openGraph: {
+    title: "Curriculum — VoidZero CPA",
+    description:
+      "Explore the full VoidZero CPA curriculum covering organic traffic, funnel building, and monetization systems.",
+    type: "website",
+    url: "https://cpahustler.com/curriculum",
+  },
 };
 
 const curriculum = [
