@@ -1,0 +1,123 @@
+# VoidZero CPA — Project Overview
+
+## What This Site Is
+
+VoidZero CPA is a marketing funnel website for Mr. Void's CPA affiliate marketing education platform. It promotes free webinars, paid mentorship programs, and educational content around Cost Per Action (CPA) affiliate marketing — specifically focused on organic traffic methods (Instagram, Telegram, content funnels) rather than paid ads.
+
+## Site Structure
+
+### Pages
+- `/` — Home/landing page with hero, intro to CPA, features, social proof, webinar signup
+- `/cpa` — Explains what CPA affiliate marketing is
+- `/curriculum` — Course curriculum overview with plan tiers (Basic, Premium, Elite)
+- `/pricing` — Pricing for mentorship programs
+- `/mentor` — Meet Mr. Void, the mentor
+- `/webinar` — Free webinar registration page
+- `/consultation` — Book a consultation call
+- `/proofs` — Social proof (testimonials, results screenshots)
+- `/about` — About page
+- `/faq` — Searchable FAQ with categories: General, Payment & Pricing, Support & Access, Technical
+- `/terms` — Terms & Conditions
+- `/privacy` — Privacy Policy
+- `/refund` — Cancellation & Refund Policy
+- `/shipping` — Shipping Policy (digital products)
+- `/sitemap.xml` — Sitemap
+- `/robots.txt` — Robots directives
+
+## Design System
+
+### Theme
+- Pure black & white monochrome aesthetic, zero border-radius
+- Playfair Display (`display-font`) for headings, system serif fallback
+- System sans-serif (`body-text`) for body text
+- `btn-primary`: white bg, black text (dark: black bg, white text)
+- `btn-secondary`: transparent, black border (dark: white border)
+- `label-text`: uppercase, letter-spacing 0.15em
+
+### Dark Mode
+- Supported via `ThemeProvider` (`components/ThemeProvider.tsx`)
+- Stores preference in `localStorage` key `"voidzero-theme"`
+- Resolves `light`/`dark`/`system` preference
+- Applies `dark` class to `<html>` element
+
+### Textures
+- `.noise` class for grain overlay
+- `.lines` class for line pattern
+- `.vertical-lines` class for vertical line pattern
+- `.section-rule` for horizontal separator
+
+### LogoLoop
+- Custom animated marquee component (`components/ui/LogoLoop.tsx`)
+- Scrolling right by default, pause on hover, per-item scale-on-hover
+- Fade-out gradient on edges
+
+### ClickSpark
+- Canvas-based spark particle effect on click (`components/ui/ClickSpark.tsx`)
+- Wrapped via `ClickSparkProvider` (`components/ui/ClickSparkProvider.tsx`)
+- Spark color adapts to theme: white on dark, black on light
+
+### Not-Found Page
+- Custom 404 using Avatar, Empty components from shadcn-style UI
+- Shows "404" avatar with quick navigation links
+
+## Technical Stack
+
+- **Framework**: Next.js 16 with App Router (static prerendering, Turbopack)
+- **Styling**: Tailwind CSS v4 with `@theme inline` CSS variables
+- **UI Components**: Custom components in `components/ui/` (shadcn-style architecture)
+- **Animations**: Framer Motion (`motion` package) for SVG/text reveals
+- **State**: React hooks only (useState, useCallback, useMemo, useRef, useEffect)
+- **Theme**: Client-side `ThemeProvider` context
+- **Analytics**: Vercel Analytics (`@vercel/analytics/react`)
+- **Utilities**: `clsx` + `tailwind-merge` for `cn()` in `lib/utils.ts`
+
+## Key Components
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| `ThemeProvider` | `components/ThemeProvider.tsx` | Dark/light/system theme context |
+| `ThemeToggle` | `components/ui/ThemeToggle.tsx` | Radix DropdownMenu theme switcher |
+| `Navbar` | `app/components/Navbar.tsx` | Top navigation bar |
+| `Footer` | `app/components/Footer.tsx` | Footer links + FooterLogoLoop |
+| `LogoLoop` | `components/ui/LogoLoop.tsx` | Animated logo marquee |
+| `FooterLogoLoop` | `app/components/Footer.tsx` | LogoLoop with CPA network logos |
+| `ClickSpark` | `components/ui/ClickSpark.tsx` | Click spark canvas effect |
+| `ClickSparkProvider` | `components/ui/ClickSparkProvider.tsx` | Theme-aware spark wrapper |
+| `VercelAnalytics` | `components/ui/VercelAnalytics.tsx` | Vercel Analytics client wrapper |
+| `Empty`, `EmptyHeader`, `EmptyMedia`, `EmptyTitle`, `EmptyDescription`, `EmptyContent` | `components/ui/empty.tsx` | shadcn-style empty state components |
+| `Avatar`, `AvatarFallback` | `components/ui/avatar.tsx` | Radix Avatar primitive |
+| `Button` | `components/ui/button.tsx` | Custom button with btn-primary/secondary styles |
+| `NotFoundPage` | `components/ui/not-found-page.tsx` | Custom 404 page component |
+
+## Data Files
+
+| File | Purpose |
+|------|---------|
+| `lib/termsData.ts` | Terms & Conditions content |
+| `lib/privacyData.ts` | Privacy Policy content |
+| `lib/refundData.ts` | Cancellation & Refund Policy content |
+| `lib/shippingData.ts` | Shipping Policy content |
+
+## SEO & Metadata
+
+- Root metadata in `app/layout.tsx`: title "VoidZero CPA — Free Affiliate Marketing Webinar", description covering organic funnels and CPA marketing
+- Static sitemap at `/sitemap.xml` with weekly changefreq for all routes
+- Custom 404 page at `app/not-found.tsx`
+- Skip-to-content link in layout
+- `robots.txt` allows all crawlers
+
+## CSS Architecture
+
+All design tokens live in `app/globals.css` under `:root` (light) and `.dark` selectors:
+- `--primary`, `--background`, `--foreground`
+- `--muted-foreground`, `--border`
+- `--accent`, `--secondary`
+- Custom spacing, typography, and animation CSS variables
+
+## Build & Dev
+
+```bash
+npm run dev      # Development server (Turbopack)
+npm run build    # Static production build
+npm run start    # Start production server
+```
