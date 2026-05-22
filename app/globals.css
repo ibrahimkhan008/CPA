@@ -1,26 +1,411 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+  --muted: #f5f5f5;
+  --muted-foreground: #525252;
+  --border: #000000;
+  --border-light: #e5e5e5;
+  --accent: #000000;
+  --accent-foreground: #ffffff;
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --ring: #000000;
+  --primary: #000000;
+  --primary-foreground: #ffffff;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #000000;
+  --input: #000000;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #f5f5f5;
+  --muted: #1a1a1a;
+  --muted-foreground: #a3a3a3;
+  --border: #f5f5f5;
+  --border-light: #2a2a2a;
+  --accent: #f5f5f5;
+  --accent-foreground: #0a0a0a;
+  --card: #111111;
+  --card-foreground: #f5f5f5;
+  --ring: #f5f5f5;
+  --primary: #f5f5f5;
+  --primary-foreground: #0a0a0a;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #f5f5f5;
+  --input: #f5f5f5;
+  --popover: #111111;
+  --popover-foreground: #f5f5f5;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-input: var(--input);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  border-radius: 0 !important;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+/* Display / Headlines */
+.display-font {
+  font-family: var(--font-display);
+}
+
+/* Body copy — readable serif at proper scale */
+.body-text {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.625;
+  letter-spacing: 0;
+}
+
+/* Label / metadata — mono uppercase */
+.label-text {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Hero oversized title */
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 16vw, 12rem);
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+}
+
+/* Section divider — thick black rule between every section */
+.section-rule {
+  height: 4px;
+  width: 100%;
+  background: var(--foreground);
+}
+
+/* Card hover — full color inversion */
+.card-hover {
+  transition: background 100ms linear, color 100ms linear;
+}
+
+.card-hover:hover {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.invert-hover:hover * {
+  color: var(--foreground);
+  border-color: var(--foreground);
+}
+
+/* Buttons */
+.btn-primary {
+  background: #000000;
+  color: #ffffff;
+  border: 2px solid #000000;
+  transition: background 100ms linear, color 100ms linear;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  font-family: var(--font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+.dark .btn-primary {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+.dark .btn-primary:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #000000;
+  border: 2px solid #000000;
+  transition: background 100ms linear, color 100ms linear;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  font-family: var(--font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.btn-secondary:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+.dark .btn-secondary {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.dark .btn-secondary:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* Focus states — required for all interactive elements */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+a:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+/* Noise texture — paper-like quality, used on hero sections */
+.noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Horizontal lines — primary texture for white-bg sections */
+.lines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(0,0,0,0.015) 1px,
+    rgba(0,0,0,0.015) 2px
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+/* Vertical lines — for dark/inverted sections */
+.vertical-lines {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 1px,
+    rgba(255,255,255,0.03) 1px,
+    rgba(255,255,255,0.03) 2px
+  );
+  background-size: 4px 100%;
+  pointer-events: none;
+}
+
+/* Grid pattern — editorial sections */
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Grid pattern for dark sections */
+.grid-pattern-dark {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Diagonal lines — process/timeline sections */
+.diagonal-lines {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 40px,
+    rgba(0,0,0,0.03) 40px,
+    rgba(0,0,0,0.03) 42px
+  );
+  pointer-events: none;
+}
+
+/* Proof card hover — slight lift */
+.proof-hover {
+  transition: transform 100ms linear, background 100ms linear;
+}
+
+.proof-hover:hover {
+  transform: translateY(-4px);
+  background: rgba(255,255,255,0.05);
+}
+
+/* Glass card for proof items */
+.glass {
+  background: rgba(255,255,255,0.03);
+}
+
+/* Sneaky button — sliding bar effect */
+@keyframes right {
+  0% {
+    transform: translateX(calc(100% + 0.375rem));
+  }
+  50% {
+    transform: translateX(calc(100% + 0.375rem + 0.25rem));
+  }
+  100% {
+    transform: translateX(calc(100% + 0.375rem));
+  }
+}
+
+.button06 {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  border: 2px solid #000;
+  background: #000;
+  color: #fff;
+  padding: 1.125rem 1.5rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 100ms linear, color 100ms linear;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.button06:hover {
+  background: #fff;
+  color: #000;
+}
+
+.button06:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: 3px;
+}
+
+.button06_bg {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  transform: translateX(100%);
+  z-index: 0;
+}
+
+.button06:hover .button06_bg {
+  animation: right 0.4s ease forwards;
+}
+
+.button06_inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.button06_text {
+  display: block;
+  position: relative;
+}
+
+.button06_icon {
+  display: inline-flex;
+  align-items: center;
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.button06_icon-start {
+  display: none;
+}
+
+.button06_icon-mid {
+  display: block;
+  width: 0.375rem;
+  height: 2px;
+  background: currentColor;
+  margin: 0 0.125rem;
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.button06_icon-end {
+  display: flex;
+  align-items: center;
+  transform: translateX(0.25rem);
+  transition: transform 0.2s ease;
+}
+
+.button06:hover .button06_icon-end {
+  transform: translateX(0.375rem);
+}
+
+.button06_icon-svg {
+  width: 0.5rem;
+  height: 1rem;
+  color: currentColor;
 }
