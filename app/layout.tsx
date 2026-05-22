@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "./components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { VercelAnalytics } from "@/components/ui/VercelAnalytics";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -40,6 +41,7 @@ export default function RootLayout({
 
         <ThemeProvider>
           <Navbar />
+          <VercelAnalytics />
 
           <main id="main-content" className="flex-1">{children}</main>
 
