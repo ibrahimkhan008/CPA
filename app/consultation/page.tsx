@@ -249,7 +249,7 @@ export default function ConsultationPage() {
               </p>
             </div>
 
-            <div className="lg:col-span-5 border-2 border-black p-8 bg-white">
+            <div className="lg:col-span-5 border-2 border-black p-8 bg-white text-black dark:bg-white dark:text-black">
               <div className="space-y-8 mb-10">
                 {[
                   {
@@ -270,7 +270,7 @@ export default function ConsultationPage() {
                     <div className="label-text text-neutral-500 mb-2">
                       {label}
                     </div>
-                    <div className="text-lg leading-relaxed body-text">
+                    <div className="text-lg leading-relaxed body-text text-neutral-700">
                       {value}
                     </div>
                   </div>
@@ -279,7 +279,7 @@ export default function ConsultationPage() {
 
               <button
                 type="button"
-                className="w-full btn-primary py-5 text-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2"
+                className="w-full btn-primary py-5 text-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2 bg-black text-white border-black"
               >
                 Join Community →
               </button>
