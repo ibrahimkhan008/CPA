@@ -44,9 +44,9 @@ export default function WebinarForm() {
 
   if (!mounted) {
     return (
-      <div className="lg:col-span-7 border-2 border-black p-10" suppressHydrationWarning>
-        <div className="label-text text-neutral-600 mb-8" suppressHydrationWarning>
-          Reserve Your Spot
+      <div className="lg:col-span-7 border-4 border-black bg-black" suppressHydrationWarning>
+        <div className="p-10">
+          <div className="label-text text-neutral-500 mb-6">Loading...</div>
         </div>
       </div>
     );
@@ -54,29 +54,30 @@ export default function WebinarForm() {
 
   if (submitted) {
     return (
-      <div className="lg:col-span-7 border-2 border-black p-10 text-center bg-white text-black relative overflow-hidden">
+      <div className="lg:col-span-7 border-4 border-black bg-black text-white relative overflow-hidden" suppressHydrationWarning>
         <div className="noise"></div>
-        <div className="absolute top-0 left-0 right-0 h-2 bg-black" />
-        <div className="relative z-10">
-          <div className="display-font text-5xl md:text-6xl font-bold mb-4 text-black" suppressHydrationWarning>
-            You're In!
+        <div className="absolute top-0 left-0 right-0 h-1 bg-white" />
+        <div className="relative z-10 p-10">
+          <div className="label-text text-neutral-400 mb-6">Registration Confirmed</div>
+
+          <div className="display-font text-5xl md:text-7xl font-bold tracking-tight leading-none mb-8 text-white">
+            YOU&apos;RE IN!
           </div>
 
-          <p className="text-neutral-600 body-text mb-10 text-lg text-black" suppressHydrationWarning>
-            Check your email for webinar access details. See you in the session!
+          <p className="text-neutral-400 body-text mb-12 text-lg text-neutral-300" suppressHydrationWarning>
+            Check your inbox for access details. The session starts soon.
           </p>
 
-          <div className="border-t border-black pt-8" suppressHydrationWarning>
-            <p className="label-text text-neutral-500 mb-6">What to do next</p>
-            <div className="grid grid-cols-1 gap-4 text-left">
+          <div className="border-t border-white/20 pt-10" suppressHydrationWarning>
+            <div className="grid grid-cols-1 gap-8">
               {[
-                "Check your inbox for a confirmation email",
-                "Join the free webinar at the scheduled time",
-                "Bring your questions — live Q&amp;A included",
-              ].map((step) => (
-                <div key={step} className="flex gap-4 text-base text-neutral-700 body-text">
-                  <span className="text-black font-bold">→</span>
-                  <span dangerouslySetInnerHTML={{ __html: step }} />
+                { step: "01", text: "Check your inbox for a confirmation email" },
+                { step: "02", text: "Join the free webinar at the scheduled time" },
+                { step: "03", text: "Bring your questions — live Q&A included" },
+              ].map(({ step, text }) => (
+                <div key={step} className="flex items-start gap-6">
+                  <span className="label-text text-neutral-500 shrink-0">{step}</span>
+                  <span className="text-neutral-300 body-text text-base">{text}</span>
                 </div>
               ))}
             </div>
