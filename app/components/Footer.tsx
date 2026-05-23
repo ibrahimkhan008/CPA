@@ -41,6 +41,15 @@ const networkLogos = [
     title: "CPALead",
     href: "https://cpalead.com",
   },
+  {
+    node: (
+      <span className="display-font text-xl font-bold tracking-tight text-foreground dark:text-white px-2">
+        MaxBounty
+      </span>
+    ),
+    title: "MaxBounty",
+    href: "https://maxbounty.com",
+  },
 ];
 
 export function FooterLogoLoop() {
