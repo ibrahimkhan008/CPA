@@ -233,9 +233,9 @@ export default function AboutPage() {
               <div key={item.year} className="relative pl-10 md:pl-16 pb-20 last:pb-0">
                 <div className="absolute -left-[18px] top-2 w-8 h-8 bg-black" />
 
-                <div className="label-text text-neutral-600 mb-4">{item.year}</div>
+                <div className="label-text text-neutral-600 mb-4 text-black">{item.year}</div>
 
-                <h3 className="display-font text-4xl md:text-5xl font-bold mb-6 leading-none">
+                <h3 className="display-font text-4xl md:text-5xl font-bold mb-6 leading-none text-black">
                   {item.title}
                 </h3>
 
