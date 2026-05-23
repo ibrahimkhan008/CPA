@@ -143,6 +143,11 @@ body {
   color: var(--background);
 }
 
+.card-hover:hover p,
+.card-hover:hover p span {
+  color: var(--background) !important;
+}
+
 .invert-hover:hover * {
   color: var(--foreground);
   border-color: var(--foreground);
