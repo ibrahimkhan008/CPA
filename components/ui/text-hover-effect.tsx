@@ -56,7 +56,7 @@ export const TextHoverEffect = ({
         </mask>
       </defs>
 
-      {/* Ghost outline — traced path */}
+      {/* Ghost outline — traced path, visible at idle + hover */}
       <motion.text
         x="50%"
         y="52%"
@@ -65,8 +65,8 @@ export const TextHoverEffect = ({
         fontSize="88"
         fontFamily="'Playfair Display', Georgia, serif"
         fontWeight="800"
-        stroke="#e5e5e5"
-        strokeWidth="0.8"
+        stroke="rgba(255,255,255,0.7)"
+        strokeWidth="1.5"
         fill="none"
         initial={{ strokeDashoffset: 1200, strokeDasharray: 1200 }}
         animate={{ strokeDashoffset: 0, strokeDasharray: 1200 }}
@@ -75,7 +75,7 @@ export const TextHoverEffect = ({
         {text}
       </motion.text>
 
-      {/* Black fill — fully visible by default */}
+      {/* Dark inner stroke — visible at idle, hidden on hover */}
       <text
         x="50%"
         y="52%"
@@ -85,8 +85,8 @@ export const TextHoverEffect = ({
         fontFamily="'Playfair Display', Georgia, serif"
         fontWeight="800"
         fill="transparent"
-        stroke="#000000"
-        strokeWidth="0.4"
+        stroke="rgba(0,0,0,0.4)"
+        strokeWidth="0.6"
         style={{ opacity: hovered ? 0 : 1 }}
       >
         {text}
