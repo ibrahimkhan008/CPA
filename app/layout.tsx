@@ -10,6 +10,7 @@ import { OrganizationJsonLd } from "@/components/ui/OrganizationJsonLd";
 import { VercelSpeedInsights } from "@/components/ui/VercelSpeedInsights";
 import { ToastProvider } from "@/components/ui/toast";
 import { DevBanner } from "@/components/ui/DevBanner";
+import { DevAgentation } from "@/components/ui/DevAgentation";
 import { ClarityProvider } from "@/components/ui/ClarityProvider";
 import "./globals.css";
 
@@ -46,6 +47,7 @@ export default function RootLayout({
         <ThemeProvider>
           <ToastProvider>
             <DevBanner />
+            <DevAgentation />
             <ClickSparkProvider>
               <OrganizationJsonLd />
               <VercelSpeedInsights />
