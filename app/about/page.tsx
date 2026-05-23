@@ -216,11 +216,11 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end flex-wrap gap-8 mb-20">
             <div>
-              <div className="label-text text-neutral-600 mb-5">
+              <div className="label-text text-neutral-600 mb-5 text-black">
                 Journey Timeline
               </div>
 
-              <h2 className="display-font text-5xl md:text-8xl leading-none font-bold uppercase">
+              <h2 className="display-font text-5xl md:text-8xl leading-none font-bold uppercase text-black">
                 THE
                 <br />
                 JOURNEY
