@@ -212,9 +212,9 @@ export const termsData = {
       title: "21. Contact Information",
       content: [
         "For questions about these Terms and Conditions, please contact us:",
-        "• WhatsApp: +91 9098786335",
-        "• Instagram: @mrvoid.cpa",
-        "• Telegram: @CPAHustler",
+        "• WhatsApp: +91 95219 03155",
+        "• Instagram: @cpahustler",
+        "• Telegram: @zephrusX",
         "• Email: support@cpahustler.com",
         "• Website: cpahustler.com",
       ],

@@ -45,9 +45,9 @@ const footerLinks: FooterSection[] = [
   {
     label: "Connect",
     links: [
-      { title: "Facebook", href: "#" },
-      { title: "Instagram", href: "#" },
-      { title: "YouTube", href: "#" },
+      { title: "Facebook", href: "https://www.facebook.com/profile.php?id=61590485664954" },
+      { title: "Instagram", href: "https://www.instagram.com/cpahustler" },
+      { title: "YouTube", href: "https://www.youtube.com/@CPAHUSTLER" },
       { title: "LinkedIn", href: "#" },
     ],
   },
@@ -97,10 +97,10 @@ export function Footer() {
       <div className="grid w-full gap-8 xl:grid-cols-3 xl:gap-8">
         <AnimatedContainer className="space-y-4">
           <span className="display-font text-xl font-bold tracking-tight">
-            VoidZero
+            CPAHUSTLER
           </span>
           <p className="text-muted-foreground text-sm mt-8 md:mt-0">
-            © {new Date().getFullYear()} VoidZero. All rights reserved.
+            © {new Date().getFullYear()} cpahustler. All rights reserved.
           </p>
         </AnimatedContainer>
 

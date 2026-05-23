@@ -499,7 +499,7 @@ export default function VoidZeroCPAWebsite() {
       </section>
 
       <footer className="border-t-4 border-black py-10 px-6 md:px-10 text-sm tracking-[0.15em] uppercase flex flex-col md:flex-row gap-4 justify-between">
-        <div>VOIDZERO © 2026</div>
+        <div>CPAHUSTLER © 2026</div>
         <div>Earnings are not guaranteed. Results vary based on effort and consistency.</div>
       </footer>
     </div>
