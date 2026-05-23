@@ -41,15 +41,16 @@ export default function WebinarForm() {
 
   if (submitted) {
     return (
-      <div className="border-2 border-black p-10 text-center">
+      <div className="border-2 border-black p-10 text-center" suppressHydrationWarning>
         <div className="display-font text-4xl font-bold mb-4">You&apos;re In!</div>
-        <p className="text-neutral-600 body-text mb-6">
+        <p className="text-neutral-600 body-text mb-6" suppressHydrationWarning>
           Check your email for webinar access details. See you in the session!
         </p>
         <button
           type="button"
           onClick={() => router.refresh()}
           className="text-sm underline"
+          suppressHydrationWarning
         >
           Register another
         </button>
@@ -59,13 +60,13 @@ export default function WebinarForm() {
 
   return (
     <div className="lg:col-span-7 border-2 border-black p-10" suppressHydrationWarning>
-      <div className="label-text text-neutral-600 mb-8">
+      <div className="label-text text-neutral-600 mb-8" suppressHydrationWarning>
         Reserve Your Spot
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
-        <div>
-          <label htmlFor="name" className="label-text font-bold mb-3 block">
+      <form onSubmit={handleSubmit} className="space-y-8" suppressHydrationWarning>
+        <div suppressHydrationWarning>
+          <label htmlFor="name" className="label-text font-bold mb-3 block" suppressHydrationWarning>
             Full Name<span className="text-black ml-1">*</span>
           </label>
           <input
@@ -80,7 +81,7 @@ export default function WebinarForm() {
         </div>
 
         <div suppressHydrationWarning>
-          <label htmlFor="email" className="label-text font-bold mb-3 block">
+          <label htmlFor="email" className="label-text font-bold mb-3 block" suppressHydrationWarning>
             Email Address<span className="text-black ml-1">*</span>
           </label>
           <input
@@ -94,8 +95,8 @@ export default function WebinarForm() {
           />
         </div>
 
-        <div>
-          <label htmlFor="phone" className="label-text font-bold mb-3 block">
+        <div suppressHydrationWarning>
+          <label htmlFor="phone" className="label-text font-bold mb-3 block" suppressHydrationWarning>
             WhatsApp Number
           </label>
           <input
@@ -104,17 +105,19 @@ export default function WebinarForm() {
             type="tel"
             placeholder="+91 98765 43210"
             className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text"
+            suppressHydrationWarning
           />
         </div>
 
-        <div>
-          <label htmlFor="interest" className="label-text font-bold mb-3 block">
+        <div suppressHydrationWarning>
+          <label htmlFor="interest" className="label-text font-bold mb-3 block" suppressHydrationWarning>
             What interests you most?
           </label>
           <select
             id="interest"
             name="interest"
             className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] bg-white body-text"
+            suppressHydrationWarning
           >
             <option>Free traffic methods</option>
             <option>Landing page creation</option>
@@ -128,11 +131,12 @@ export default function WebinarForm() {
           type="submit"
           disabled={loading}
           className="w-full btn-primary py-5 text-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-3 disabled:opacity-50 disabled:cursor-not-allowed"
+          suppressHydrationWarning
         >
           {loading ? "Registering..." : "Register Free →"}
         </button>
 
-        <p className="text-xs text-neutral-500 text-center leading-relaxed">
+        <p className="text-xs text-neutral-500 text-center leading-relaxed" suppressHydrationWarning>
           No spam. No payment required. We&apos;ll send webinar access details to
           your email.
         </p>
