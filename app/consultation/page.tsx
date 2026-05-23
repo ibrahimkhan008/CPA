@@ -237,7 +237,7 @@ export default function ConsultationPage() {
                 After Payment
               </div>
 
-              <h2 className="display-font text-5xl md:text-8xl leading-[0.9] font-bold mb-8">
+              <h2 className="display-font text-5xl md:text-8xl leading-[0.9] font-bold mb-8 text-black">
                 PAYMENT
                 <br />
                 SUCCESSFUL
