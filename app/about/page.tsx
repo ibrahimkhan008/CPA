@@ -333,7 +333,7 @@ export default function AboutPage() {
               Final CTA
             </div>
 
-            <h2 className="display-font text-5xl md:text-[8rem] leading-[0.85] tracking-[-0.06em] font-bold uppercase mb-10">
+            <h2 className="display-font text-5xl md:text-[8rem] leading-[0.85] tracking-[-0.06em] font-bold uppercase mb-10 text-black">
               JOIN THE
               <br />
               COMMUNITY
