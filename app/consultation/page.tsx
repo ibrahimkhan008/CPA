@@ -233,17 +233,17 @@ export default function ConsultationPage() {
 
           <div className="relative z-10 grid lg:grid-cols-12 gap-14 items-center">
             <div className="lg:col-span-7">
-              <div className="label-text text-neutral-600 mb-5">
+              <div className="label-text text-neutral-600 mb-5 text-black dark:text-neutral-600">
                 After Payment
               </div>
 
-              <h2 className="display-font text-5xl md:text-8xl leading-[0.9] font-bold mb-8 text-black">
+              <h2 className="display-font text-4xl md:text-6xl leading-[0.9] font-bold mb-8 text-black">
                 PAYMENT
                 <br />
                 SUCCESSFUL
               </h2>
 
-              <p className="text-xl leading-relaxed text-neutral-700 body-text">
+              <p className="text-xl leading-relaxed text-neutral-700 body-text text-black dark:text-neutral-700">
                 After successful payment verification, users receive private
                 community access and onboarding instructions instantly.
               </p>
