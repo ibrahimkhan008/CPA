@@ -184,14 +184,14 @@ export default function WebinarPage() {
       <div className="section-rule"></div>
 
       {/* Registration Form */}
-      <section id="register" className="py-24 md:py-32 px-6 md:px-10">
+      <section id="register" className="py-24 md:py-32 px-6 md:px-10 bg-black text-white">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-16">
           <div className="lg:col-span-5">
-            <div className="label-text text-neutral-600 mb-6">
+            <div className="label-text text-neutral-400 mb-5">
               Register
             </div>
 
-            <h2 className="display-font text-5xl md:text-7xl font-bold leading-none tracking-tight mb-8">
+            <h2 className="display-font text-5xl md:text-8xl leading-none font-bold mb-10">
               JOIN THE
               <br />
               FREE
@@ -199,32 +199,22 @@ export default function WebinarPage() {
               SESSION
             </h2>
 
-            <div className="space-y-6 text-lg leading-relaxed text-neutral-700">
-              <p className="body-text">
-                No payment required. Just your name, email, and a willingness to
-                learn. The webinar is completely free — what you do after is up
-                to you.
-              </p>
+            <p className="text-lg leading-relaxed text-neutral-300 max-w-md mb-10 body-text">
+              No payment required. Just your name, email, and a willingness to
+              learn. The webinar is completely free — what you do after is up
+              to you.
+            </p>
 
-              <div className="border-2 border-black p-8">
-                <div className="label-text text-neutral-500 mb-4">
-                  Webinar Details
+            <div className="space-y-3">
+              {[
+                "No spam. No payment required.",
+                "Live Q&A with Mr. Void",
+                "Instant access to materials",
+              ].map((item) => (
+                <div key={item} className="label-text text-neutral-500">
+                  {item}
                 </div>
-
-                <div className="space-y-4 text-sm body-text">
-                  {[
-                    ["Format", "Live Online Session"],
-                    ["Duration", "90 Minutes + Q&A"],
-                    ["Cost", "Completely Free"],
-                    ["Host", "Mr. Void"],
-                  ].map(([label, value]) => (
-                    <div key={label} className="flex gap-4">
-                      <span className="label-text shrink-0 w-24">{label}</span>
-                      <span>{value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 

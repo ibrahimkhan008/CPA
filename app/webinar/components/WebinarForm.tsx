@@ -89,8 +89,8 @@ export default function WebinarForm() {
   }
 
   return (
-    <div className="lg:col-span-7 border-2 border-black p-10" suppressHydrationWarning>
-      <div className="label-text text-neutral-600 mb-8" suppressHydrationWarning>
+    <div className="lg:col-span-7 border-2 border-white p-10 text-white" suppressHydrationWarning>
+      <div className="label-text text-neutral-400 mb-8" suppressHydrationWarning>
         Reserve Your Spot
       </div>
 
@@ -104,7 +104,7 @@ export default function WebinarForm() {
             name="name"
             type="text"
             placeholder="Your name"
-            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text text-black"
+            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-black body-text text-white"
             required
             suppressHydrationWarning
           />
@@ -119,7 +119,7 @@ export default function WebinarForm() {
             name="email"
             type="email"
             placeholder="your@email.com"
-            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text text-black"
+            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-black body-text text-white"
             required
             suppressHydrationWarning
           />
@@ -134,7 +134,7 @@ export default function WebinarForm() {
             name="phone"
             type="tel"
             placeholder="+91 98765 43210"
-            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text text-black"
+            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-black body-text text-white"
             required
             suppressHydrationWarning
           />
@@ -149,7 +149,7 @@ export default function WebinarForm() {
             name="telegram"
             type="text"
             placeholder="@yourusername"
-            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text text-black"
+            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-black body-text text-white"
             suppressHydrationWarning
           />
         </div>
@@ -161,7 +161,7 @@ export default function WebinarForm() {
           <select
             id="interest"
             name="interest"
-            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] bg-white body-text text-black"
+            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] bg-black body-text text-white"
             required
             suppressHydrationWarning
           >
