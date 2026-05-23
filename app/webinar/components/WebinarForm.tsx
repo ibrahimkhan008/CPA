@@ -79,7 +79,7 @@ export default function WebinarForm() {
           />
         </div>
 
-        <div>
+        <div suppressHydrationWarning>
           <label htmlFor="email" className="label-text font-bold mb-3 block">
             Email Address<span className="text-black ml-1">*</span>
           </label>
