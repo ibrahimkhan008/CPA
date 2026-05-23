@@ -1,10 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function WebinarForm() {
+  const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -37,6 +42,16 @@ export default function WebinarForm() {
     }
   }
 
+  if (!mounted) {
+    return (
+      <div className="lg:col-span-7 border-2 border-black p-10" suppressHydrationWarning>
+        <div className="label-text text-neutral-600 mb-8" suppressHydrationWarning>
+          Reserve Your Spot
+        </div>
+      </div>
+    );
+  }
+
   if (submitted) {
     return (
       <div className="lg:col-span-7 border-2 border-black p-10 text-center bg-white text-black relative overflow-hidden">
@@ -44,7 +59,7 @@ export default function WebinarForm() {
         <div className="absolute top-0 left-0 right-0 h-2 bg-black" />
         <div className="relative z-10">
           <div className="display-font text-5xl md:text-6xl font-bold mb-4 text-black" suppressHydrationWarning>
-            You&apos;re In!
+            You're In!
           </div>
 
           <p className="text-neutral-600 body-text mb-10 text-lg text-black" suppressHydrationWarning>
