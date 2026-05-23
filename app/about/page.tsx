@@ -152,13 +152,13 @@ export default function AboutPage() {
             {stats.map((item) => (
               <div
                 key={item.label}
-                className="border border-black p-10 text-center min-h-[280px] flex flex-col justify-center card-hover"
+                className="border border-black p-10 text-center min-h-[280px] flex flex-col justify-center card-hover text-black"
               >
                 <div className="display-font text-6xl md:text-7xl font-bold mb-6">
                   {item.value}
                 </div>
 
-                <div className="label-text opacity-70">{item.label}</div>
+                <div className="label-text opacity-70 text-black">{item.label}</div>
               </div>
             ))}
           </div>
