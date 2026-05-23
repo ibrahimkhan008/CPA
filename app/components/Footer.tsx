@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import LogoLoop from "@/components/ui/LogoLoop";
+import { Footer } from "@/components/ui/FooterSection";
 
 const networkLogos = [
   {
@@ -84,28 +85,4 @@ const footerLinks = [
   { href: "/faq", label: "FAQ" },
 ];
 
-export function Footer() {
-  return (
-    <>
-      <footer className="border-t-4 border-black dark:border-white py-10 px-6 md:px-10 text-sm tracking-[0.15em] uppercase">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-4 justify-between">
-          <div>VoidZero © 2026</div>
-          <div className="flex flex-wrap gap-6 md:gap-8">
-            {footerLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="hover:underline focus-visible:outline focus-visible:outline-3 focus-visible:outline-black dark:focus-visible:outline-white focus-visible:outline-offset-2"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-        <div className="max-w-7xl mx-auto mt-4 text-xs text-neutral-500 tracking-wide">
-          Earnings are not guaranteed. Results vary based on effort and consistency.
-        </div>
-      </footer>
-    </>
-  );
-}
+export { Footer } from "@/components/ui/FooterSection";
