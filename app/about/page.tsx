@@ -348,6 +348,7 @@ export default function AboutPage() {
               <Link
                 href="/webinar"
                 className="btn-primary px-12 py-6 text-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-3"
+                style={{ backgroundColor: "#000", color: "#fff", borderColor: "#000" }}
               >
                 Join Free Webinar →
               </Link>
