@@ -70,15 +70,21 @@ export default function ConsultationForm() {
           <select
             id="experience"
             name="experience"
-            className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none focus:border-[3px] focus:outline-none text-white body-text"
+            className="w-full bg-black border-b-2 border-white p-2 pb-4 outline-none focus:border-[3px] focus:outline-none text-white body-text appearance-none cursor-pointer"
             required
           >
-            <option value="" className="text-neutral-500 italic">
+            <option value="" className="bg-black text-neutral-400" disabled>
               Select level
             </option>
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
+            <option value="beginner" className="bg-black text-white">
+              Beginner
+            </option>
+            <option value="intermediate" className="bg-black text-white">
+              Intermediate
+            </option>
+            <option value="advanced" className="bg-black text-white">
+              Advanced
+            </option>
           </select>
         </div>
       </div>
