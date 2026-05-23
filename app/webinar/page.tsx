@@ -248,7 +248,8 @@ export default function WebinarPage() {
 
           <Link
             href="/pricing"
-            className="btn-secondary bg-black text-white border-black hover:bg-white hover:text-black shrink-0 focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-3"
+            className="btn-secondary px-10 py-5 text-sm shrink-0 focus-visible:outline focus-visible:outline-3 focus-visible:outline-white focus-visible:outline-offset-3"
+            style={{ backgroundColor: "black", color: "white", borderColor: "black" }}
           >
             View Pricing →
           </Link>
