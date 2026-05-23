@@ -7,7 +7,7 @@ const TELEGRAM_MESSAGE_THREAD_ID = process.env.TELEGRAM_MESSAGE_THREAD_ID;
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, email, phone, interest } = body;
+    const { name, email, phone, interest, telegram } = body;
 
     if (!name || !email) {
       return NextResponse.json({ error: "Name and email are required" }, { status: 400 });
@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
 *Name:* ${name}
 *Email:* ${email}
 *Phone:* ${phone || "Not provided"}
+*Telegram:* ${telegram || "Not provided"}
 *Interest:* ${interest || "Not specified"}
 
 ---

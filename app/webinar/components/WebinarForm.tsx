@@ -20,6 +20,7 @@ export default function WebinarForm() {
       name: (form.elements.namedItem("name") as HTMLInputElement).value,
       email: (form.elements.namedItem("email") as HTMLInputElement).value,
       phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+      telegram: (form.elements.namedItem("telegram") as HTMLInputElement).value,
       interest: (form.elements.namedItem("interest") as HTMLSelectElement).value,
     };
 
@@ -133,6 +134,20 @@ export default function WebinarForm() {
             name="phone"
             type="tel"
             placeholder="+91 98765 43210"
+            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text text-black"
+            suppressHydrationWarning
+          />
+        </div>
+
+        <div suppressHydrationWarning>
+          <label htmlFor="telegram" className="label-text font-bold mb-3 block" suppressHydrationWarning>
+            Telegram Username
+          </label>
+          <input
+            id="telegram"
+            name="telegram"
+            type="text"
+            placeholder="@yourusername"
             className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text text-black"
             suppressHydrationWarning
           />
