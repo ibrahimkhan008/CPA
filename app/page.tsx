@@ -316,7 +316,7 @@ export default function HomePage() {
 
                 <Link
                   href={plan.href}
-                  className={`w-full block text-center py-5 text-sm font-bold border-2 transition-all duration-100 ${plan.featured ? "bg-white text-black border-white hover:bg-neutral-200 group-hover:bg-neutral-200 group-hover:text-black group-hover:border-neutral-200" : "bg-black text-white border-black hover:bg-neutral-800"} focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2`}
+                  className={`w-full block text-center py-5 text-sm font-bold border-2 transition-all duration-100 ${plan.featured ? "bg-white text-black border-white hover:bg-black hover:text-white hover:border-black group-hover:bg-black group-hover:text-white group-hover:border-black" : "bg-black text-white border-black hover:bg-neutral-800"} focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2`}
                 >
                   {plan.cta}
                 </Link>
