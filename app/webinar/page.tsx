@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import WebinarForm from "./components/WebinarForm";
 
 export const metadata: Metadata = {
   title: "Free CPA Webinar — VoidZero",
@@ -227,68 +228,7 @@ export default function WebinarPage() {
             </div>
           </div>
 
-          <div className="lg:col-span-7 border-2 border-black p-10">
-            <div className="label-text text-neutral-600 mb-8">
-              Reserve Your Spot
-            </div>
-
-            <form className="space-y-8">
-              {[
-                { id: "name", label: "Full Name", type: "text", placeholder: "Your name", required: true },
-                { id: "email", label: "Email Address", type: "email", placeholder: "your@email.com", required: true },
-                { id: "phone", label: "WhatsApp Number", type: "tel", placeholder: "+91 98765 43210", required: false },
-              ].map(({ id, label, type, placeholder, required }) => (
-                <div key={id}>
-                  <label
-                    htmlFor={id}
-                    className="label-text font-bold mb-3 block"
-                  >
-                    {label}
-                    {required && <span className="text-black ml-1">*</span>}
-                  </label>
-                  <input
-                    id={id}
-                    name={id}
-                    type={type}
-                    placeholder={placeholder}
-                    className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text"
-                    required={required}
-                  />
-                </div>
-              ))}
-
-              <div>
-                <label
-                  htmlFor="interest"
-                  className="label-text font-bold mb-3 block"
-                >
-                  What interests you most?
-                </label>
-                <select
-                  id="interest"
-                  className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] bg-white body-text"
-                >
-                  <option>Free traffic methods</option>
-                  <option>Landing page creation</option>
-                  <option>Whitehat arbitrage</option>
-                  <option>Campaign scaling</option>
-                  <option>All of the above</option>
-                </select>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full btn-primary py-5 text-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-3"
-              >
-                Register Free →
-              </button>
-
-              <p className="text-xs text-neutral-500 text-center leading-relaxed">
-                No spam. No payment required. We&apos;ll send webinar access
-                details to your email.
-              </p>
-            </form>
-          </div>
+          <WebinarForm />
         </div>
       </section>
 
