@@ -315,7 +315,7 @@ export default function AboutPage() {
             {trustBadges.map((item) => (
               <div
                 key={item}
-                className="border border-black min-h-[220px] flex items-center justify-center text-center p-8 card-hover"
+                className="border border-black min-h-[220px] flex items-center justify-center text-center p-8 card-hover text-black"
               >
                 <div>
                   <div className="text-5xl mb-6 font-bold">+</div>
