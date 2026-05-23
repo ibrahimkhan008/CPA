@@ -281,6 +281,7 @@ export function ProofsClient() {
             <Link
               href="/consultation"
               className="btn-primary px-12 py-6 text-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-3"
+              style={{ backgroundColor: "#000", color: "#fff", borderColor: "#000" }}
             >
               Go To Consultation →
             </Link>
@@ -288,6 +289,7 @@ export function ProofsClient() {
             <Link
               href="/pricing"
               className="btn-secondary px-12 py-6 text-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-3"
+              style={{ backgroundColor: "#000", color: "#fff", borderColor: "#000" }}
             >
               View Plans →
             </Link>
