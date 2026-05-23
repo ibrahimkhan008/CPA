@@ -148,7 +148,7 @@ body {
   color: var(--background) !important;
 }
 
-/* Pricing card: button inside flips when card is hovered */
+/* Pricing card: button inside stays black when card is hovered */
 .pricing-card:hover button {
   background: #000 !important;
   color: #fff !important;
