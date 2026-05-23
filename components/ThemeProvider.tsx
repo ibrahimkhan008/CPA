@@ -44,7 +44,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   // Live system preference — always reflects the latest OS setting
-  const systemTheme = useSyncExternalStore(subscribeToSystemTheme, getSnapshot, () => "dark");
+  const systemTheme: "light" | "dark" = useSyncExternalStore(
+    subscribeToSystemTheme,
+    getSnapshot,
+    () => "dark" as "light" | "dark"
+  );
 
   // Resolved theme respects system only when user has chosen "system"
   const resolvedTheme: "light" | "dark" =
