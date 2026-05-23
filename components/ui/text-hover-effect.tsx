@@ -58,7 +58,7 @@ export const TextHoverEffect = ({
 
       {/* Ghost outline — traced path, visible at idle + hover */}
       <motion.text
-        x="50%"
+        x="45%"
         y="52%"
         textAnchor="middle"
         dominantBaseline="middle"
@@ -77,7 +77,7 @@ export const TextHoverEffect = ({
 
       {/* Dark inner stroke — visible at idle, hidden on hover */}
       <text
-        x="50%"
+        x="45%"
         y="52%"
         textAnchor="middle"
         dominantBaseline="middle"
@@ -94,7 +94,7 @@ export const TextHoverEffect = ({
 
       {/* Revealed text — mask reveals black on hover */}
       <text
-        x="50%"
+        x="45%"
         y="52%"
         textAnchor="middle"
         dominantBaseline="middle"
