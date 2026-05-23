@@ -440,7 +440,7 @@ export default function PrivacyPage() {
                       <li key={section.title}>
                         <a
                           href={`#${section.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-                          className="label-text hover:underline block py-1 focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2"
+                          className="label-text hover:underline block py-1 text-black focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2"
                         >
                           {section.title}
                         </a>
