@@ -304,7 +304,7 @@ export default function AboutPage() {
               Why Trust Us
             </div>
 
-            <h2 className="display-font text-5xl md:text-8xl leading-none font-bold uppercase">
+            <h2 className="display-font text-5xl md:text-8xl leading-none font-bold uppercase text-black">
               TRUST &amp;
               <br />
               PROOF
