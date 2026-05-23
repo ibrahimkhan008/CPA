@@ -103,7 +103,7 @@ export default function WebinarForm() {
             name="name"
             type="text"
             placeholder="Your name"
-            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text"
+            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text text-black"
             required
             suppressHydrationWarning
           />
@@ -118,7 +118,7 @@ export default function WebinarForm() {
             name="email"
             type="email"
             placeholder="your@email.com"
-            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text"
+            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text text-black"
             required
             suppressHydrationWarning
           />
@@ -133,7 +133,7 @@ export default function WebinarForm() {
             name="phone"
             type="tel"
             placeholder="+91 98765 43210"
-            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text"
+            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text text-black"
             suppressHydrationWarning
           />
         </div>
@@ -145,14 +145,14 @@ export default function WebinarForm() {
           <select
             id="interest"
             name="interest"
-            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] bg-white body-text"
+            className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] bg-white body-text text-black"
             suppressHydrationWarning
           >
-            <option>Free traffic methods</option>
-            <option>Landing page creation</option>
-            <option>Whitehat arbitrage</option>
-            <option>Campaign scaling</option>
-            <option>All of the above</option>
+            <option value="Free traffic methods">Free traffic methods</option>
+            <option value="Landing page creation">Landing page creation</option>
+            <option value="Whitehat arbitrage">Whitehat arbitrage</option>
+            <option value="Campaign scaling">Campaign scaling</option>
+            <option value="All of the above">All of the above</option>
           </select>
         </div>
 
