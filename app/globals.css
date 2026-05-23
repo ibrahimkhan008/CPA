@@ -148,6 +148,12 @@ body {
   color: var(--background) !important;
 }
 
+/* Testimonial card: flip to black bg + white text on hover */
+.testimonial-card:hover {
+  background: #000 !important;
+  color: #fff !important;
+}
+
 /* Pricing card: button inside stays black when card is hovered */
 .pricing-card:hover button {
   background: #000 !important;
