@@ -159,11 +159,11 @@ export default function WebinarPage() {
             {testimonials.map(({ quote, name, location }) => (
               <div
                 key={name}
-                className="border-2 border-white p-10 card-hover"
+                className="border-2 border-white p-10 card-hover text-white"
               >
-                <div className="label-text text-neutral-400 mb-8">Review</div>
+                <div className="label-text text-neutral-400 mb-8 text-white">Review</div>
 
-                <blockquote className="display-font text-xl md:text-2xl font-bold leading-tight mb-8 italic">
+                <blockquote className="display-font text-xl md:text-2xl font-bold leading-tight mb-8 italic text-white">
                   &ldquo;{quote}&rdquo;
                 </blockquote>
 
@@ -171,7 +171,7 @@ export default function WebinarPage() {
                   <div className="label-text font-bold text-white">
                     {name}
                   </div>
-                  <div className="label-text text-neutral-400 mt-1">
+                  <div className="label-text text-neutral-400 mt-1 text-white">
                     {location}
                   </div>
                 </div>
