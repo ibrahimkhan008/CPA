@@ -127,7 +127,7 @@ export default function WebinarForm() {
 
         <div suppressHydrationWarning>
           <label htmlFor="phone" className="label-text font-bold mb-3 block" suppressHydrationWarning>
-            WhatsApp Number
+            WhatsApp Number<span className="text-black ml-1">*</span>
           </label>
           <input
             id="phone"
@@ -135,6 +135,7 @@ export default function WebinarForm() {
             type="tel"
             placeholder="+91 98765 43210"
             className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-white body-text text-black"
+            required
             suppressHydrationWarning
           />
         </div>
@@ -155,14 +156,16 @@ export default function WebinarForm() {
 
         <div suppressHydrationWarning>
           <label htmlFor="interest" className="label-text font-bold mb-3 block" suppressHydrationWarning>
-            What interests you most?
+            What interests you most?<span className="text-black ml-1">*</span>
           </label>
           <select
             id="interest"
             name="interest"
             className="w-full border-2 border-black p-4 text-base focus:outline-none focus:border-[4px] bg-white body-text text-black"
+            required
             suppressHydrationWarning
           >
+            <option value="">Select an option</option>
             <option value="Free traffic methods">Free traffic methods</option>
             <option value="Landing page creation">Landing page creation</option>
             <option value="Whitehat arbitrage">Whitehat arbitrage</option>
