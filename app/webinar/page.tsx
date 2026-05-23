@@ -238,10 +238,10 @@ export default function WebinarPage() {
       <section className="py-20 px-6 md:px-10 bg-neutral-50">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div>
-            <h2 className="display-font text-4xl md:text-5xl font-bold leading-none mb-3">
+            <h2 className="display-font text-4xl md:text-5xl font-bold leading-none mb-3 text-black">
               Want to skip the webinar?
             </h2>
-            <p className="text-neutral-600 body-text">
+            <p className="text-neutral-600 body-text text-neutral-600">
               Jump straight to the paid plans and get full access immediately.
             </p>
           </div>
