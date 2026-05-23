@@ -279,7 +279,8 @@ export default function ConsultationPage() {
 
               <button
                 type="button"
-                className="w-full btn-primary py-5 text-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2 bg-black text-white border-black"
+                className="w-full btn-primary py-5 text-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2"
+                style={{ backgroundColor: "#000", color: "#fff", borderColor: "#000" }}
               >
                 Join Community →
               </button>
