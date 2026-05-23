@@ -41,15 +41,15 @@ export default function WebinarForm() {
 
   if (submitted) {
     return (
-      <div className="border-2 border-black p-10 text-center" suppressHydrationWarning>
-        <div className="display-font text-4xl font-bold mb-4">You&apos;re In!</div>
-        <p className="text-neutral-600 body-text mb-6" suppressHydrationWarning>
+      <div className="lg:col-span-7 border-2 border-black p-10 text-center bg-white text-black">
+        <div className="display-font text-4xl font-bold mb-4 text-black">You&apos;re In!</div>
+        <p className="text-neutral-600 body-text mb-6 text-black" suppressHydrationWarning>
           Check your email for webinar access details. See you in the session!
         </p>
         <button
           type="button"
           onClick={() => router.refresh()}
-          className="text-sm underline"
+          className="btn-secondary px-8 py-4 text-sm"
           suppressHydrationWarning
         >
           Register another
