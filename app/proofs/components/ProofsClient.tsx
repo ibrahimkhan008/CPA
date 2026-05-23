@@ -262,11 +262,11 @@ export function ProofsClient() {
       {/* Final CTA */}
       <section className="py-24 md:py-32 px-6 md:px-10 bg-neutral-50">
         <div className="max-w-6xl mx-auto border-4 border-black p-10 md:p-16 text-center">
-          <div className="label-text text-neutral-600 mb-6">
+          <div className="label-text text-neutral-600 mb-6 text-black">
             Start Your Journey
           </div>
 
-          <h2 className="display-font text-5xl md:text-[8rem] leading-[0.85] tracking-[-0.06em] font-bold uppercase mb-10">
+          <h2 className="display-font text-5xl md:text-[8rem] leading-[0.85] tracking-[-0.06em] font-bold uppercase mb-10 text-black">
             START YOUR
             <br />
             JOURNEY
