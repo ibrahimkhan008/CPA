@@ -162,7 +162,7 @@ export default function PricingPage() {
                   ))}
                 </div>
 
-                <button className={`w-full py-5 text-sm font-bold border-2 transition-all duration-100 ${plan.featured ? "bg-white text-black border-white" : "bg-black text-white border-black"} focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2`}>
+                <button className={`w-full py-5 text-sm font-bold border-2 transition-all duration-100 ${plan.featured ? "bg-white text-black border-white" : "bg-black text-white border-black"} focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2 hover:!bg-black hover:!text-white hover:!border-black`}>
                   {plan.cta}
                 </button>
               </div>
