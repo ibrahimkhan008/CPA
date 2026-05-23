@@ -267,7 +267,7 @@ export default function TermsPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-12 gap-16">
             <div className="lg:col-span-4">
-              <div className="label-text text-neutral-600 mb-6">Contents</div>
+              <div className="label-text text-neutral-600 mb-6 text-black">Contents</div>
               <div className="border-2 border-black p-8">
                 <nav aria-label="Terms table of contents">
                   <ul className="space-y-3 list-none p-0 m-0">
@@ -275,7 +275,7 @@ export default function TermsPage() {
                       <li key={section.title}>
                         <a
                           href={`#${section.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-                          className="label-text hover:underline block py-1 focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2"
+                          className="label-text hover:underline block py-1 text-black focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2"
                         >
                           {section.title}
                         </a>
