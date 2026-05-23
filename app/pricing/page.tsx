@@ -127,7 +127,7 @@ export default function PricingPage() {
             {plans.map((plan) => (
               <div
                 key={plan.name}
-                className={`border-2 border-black p-10 relative card-hover group ${plan.featured ? "lg:-mt-10 lg:mb-10 bg-black text-white" : "bg-white text-black"}`}
+                className={`border-2 border-black p-10 relative card-hover pricing-card ${plan.featured ? "lg:-mt-10 lg:mb-10 bg-black text-white" : "bg-white text-black"}`}
               >
                 {plan.badge && (
                   <div
@@ -162,7 +162,7 @@ export default function PricingPage() {
                   ))}
                 </div>
 
-                <button className={`w-full py-5 text-sm font-bold border-2 transition-all duration-100 group-hover:bg-black group-hover:text-white group-hover:border-black ${plan.featured ? "bg-white text-black border-white" : "bg-black text-white border-black"} focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2`}>
+                <button className={`w-full py-5 text-sm font-bold border-2 transition-all duration-100 ${plan.featured ? "bg-white text-black border-white" : "bg-black text-white border-black"} focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-2`}>
                   {plan.cta}
                 </button>
               </div>

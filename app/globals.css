@@ -148,12 +148,11 @@ body {
   color: var(--background) !important;
 }
 
-/* Button inside card-hover: swap to black/white when card is hovered */
-.card-hover:hover button,
-.card-hover:hover a[role="button"] {
-  background: var(--foreground) !important;
-  color: var(--background) !important;
-  border-color: var(--foreground) !important;
+/* Pricing card: button inside flips when card is hovered */
+.pricing-card:hover button {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #000 !important;
 }
 
 .invert-hover:hover * {
