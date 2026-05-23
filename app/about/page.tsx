@@ -139,9 +139,9 @@ export default function AboutPage() {
       <section className="py-24 md:py-32 px-6 md:px-10 bg-neutral-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
-            <div className="label-text text-neutral-600 mb-5">Stats &amp; Impact</div>
+            <div className="label-text text-neutral-600 mb-5 text-black">Stats &amp; Impact</div>
 
-            <h2 className="display-font text-5xl md:text-8xl leading-none font-bold uppercase">
+            <h2 className="display-font text-5xl md:text-8xl leading-none font-bold uppercase text-black">
               THE
               <br />
               NUMBERS
