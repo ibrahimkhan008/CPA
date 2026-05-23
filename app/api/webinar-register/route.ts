@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+const TELEGRAM_MESSAGE_THREAD_ID = process.env.TELEGRAM_MESSAGE_THREAD_ID;
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,6 +30,7 @@ Sent via VoidZero CPA Website`;
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           chat_id: TELEGRAM_CHAT_ID,
+          message_thread_id: TELEGRAM_MESSAGE_THREAD_ID ? Number(TELEGRAM_MESSAGE_THREAD_ID) : undefined,
           text: message,
           parse_mode: "Markdown",
         }),
