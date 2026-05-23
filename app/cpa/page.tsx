@@ -233,6 +233,7 @@ export default function CPAPage() {
           <Link
             href="/webinar"
             className="btn-primary px-10 py-5 text-sm shrink-0 focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-3"
+            style={{ backgroundColor: "#000", color: "#fff", borderColor: "#000" }}
           >
             Join Free Webinar →
           </Link>
