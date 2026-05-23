@@ -22,11 +22,12 @@ export function Toast({
   description,
   action,
   duration = 5000,
-  onDismiss
+  onDismiss,
 }: ToastProps) {
   const [visible, setVisible] = useState(false);
   const [progress, setProgress] = useState(100);
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const dismissedRef = useRef(false);
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setVisible(true));
@@ -34,26 +35,36 @@ export function Toast({
   }, []);
 
   useEffect(() => {
-    if (duration > 0) {
-      const step = 100 / (duration / 50);
-      progressRef.current = setInterval(() => {
-        setProgress(prev => {
-          const next = prev - step;
-          if (next <= 0) {
-            clearInterval(progressRef.current!);
-            onDismiss(id);
-            return 0;
-          }
-          return next;
-        });
-      }, 50);
-    }
+    if (duration <= 0) return;
+
+    const step = 100 / (duration / 50);
+    progressRef.current = setInterval(() => {
+      setProgress((prev) => {
+        const next = prev - step;
+        if (next <= 0) {
+          clearInterval(progressRef.current!);
+          // Defer state update to avoid "update while rendering" warning
+          requestAnimationFrame(() => {
+            if (!dismissedRef.current) {
+              dismissedRef.current = true;
+              onDismiss(id);
+            }
+          });
+          return 0;
+        }
+        return next;
+      });
+    }, 50);
+
     return () => {
       if (progressRef.current) clearInterval(progressRef.current);
     };
   }, [duration, id, onDismiss]);
 
   const handleDismiss = useCallback(() => {
+    if (dismissedRef.current) return;
+    dismissedRef.current = true;
+    if (progressRef.current) clearInterval(progressRef.current);
     setVisible(false);
     setTimeout(() => onDismiss(id), 300);
   }, [id, onDismiss]);
@@ -61,8 +72,8 @@ export function Toast({
   const handleAction = () => {
     if (action && !("href" in action)) {
       action.onClick();
-      handleDismiss();
     }
+    handleDismiss();
   };
 
   return (
@@ -79,20 +90,12 @@ export function Toast({
           {action && (
             "href" in action ? (
               <a href={action.href} className="toast-action-link">
-                <Button
-                  size="small"
-                  variant="tertiary"
-                  onClick={handleDismiss}
-                >
+                <Button size="small" variant="tertiary" onClick={handleDismiss}>
                   {action.label}
                 </Button>
               </a>
             ) : (
-              <Button
-                size="small"
-                variant="tertiary"
-                onClick={handleAction}
-              >
+              <Button size="small" variant="tertiary" onClick={handleAction}>
                 {action.label}
               </Button>
             )
@@ -118,10 +121,7 @@ export function Toast({
         </div>
       </div>
       {duration > 0 && (
-        <div
-          className="toast-progress"
-          style={{ width: `${progress}%` }}
-        />
+        <div className="toast-progress" style={{ width: `${progress}%` }} />
       )}
     </div>
   );
@@ -148,23 +148,19 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
   const addToast = useCallback((toast: Omit<ToastItem, "id">) => {
     const id = Math.random().toString(36).slice(2, 11);
-    setToasts(prev => [...prev, { ...toast, id }]);
+    setToasts((prev) => [...prev, { ...toast, id }]);
   }, []);
 
   const removeToast = useCallback((id: string) => {
-    setToasts(prev => prev.filter(t => t.id !== id));
+    setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
   return (
     <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
       {children}
       <div className="toast-container" aria-live="polite">
-        {toasts.map(toast => (
-          <Toast
-            key={toast.id}
-            {...toast}
-            onDismiss={removeToast}
-          />
+        {toasts.map((toast) => (
+          <Toast key={toast.id} {...toast} onDismiss={removeToast} />
         ))}
       </div>
     </ToastContext.Provider>
