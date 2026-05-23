@@ -293,7 +293,7 @@ export default function TermsPage() {
                   id={section.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
                   className="border-b border-neutral-200 py-12 first:pt-0"
                 >
-                  <h2 className="display-font text-2xl md:text-4xl font-bold mb-6 leading-tight">
+                  <h2 className="display-font text-2xl md:text-4xl font-bold mb-6 leading-tight text-black">
                     {section.title}
                   </h2>
                   <div className="space-y-4">
@@ -329,7 +329,7 @@ export default function TermsPage() {
       <section className="py-16 md:py-24 px-6 md:px-10">
         <div className="max-w-7xl mx-auto text-center">
           <div className="label-text text-neutral-600 mb-6">Questions?</div>
-          <h2 className="display-font text-4xl md:text-6xl font-bold mb-8">
+          <h2 className="display-font text-4xl md:text-6xl font-bold mb-8 text-black">
             Get in Touch
           </h2>
           <p className="text-lg md:text-xl max-w-2xl mx-auto leading-relaxed text-neutral-700 body-text mb-10">
