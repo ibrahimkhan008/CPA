@@ -329,7 +329,7 @@ export default function TermsPage() {
       <section className="py-16 md:py-24 px-6 md:px-10">
         <div className="max-w-7xl mx-auto text-center">
           <div className="label-text text-neutral-600 mb-6">Questions?</div>
-          <h2 className="display-font text-4xl md:text-6xl font-bold mb-8 text-black">
+          <h2 className="display-font text-4xl md:text-6xl font-bold mb-8 text-black dark:text-white">
             Get in Touch
           </h2>
           <p className="text-lg md:text-xl max-w-2xl mx-auto leading-relaxed text-neutral-700 body-text mb-10">
