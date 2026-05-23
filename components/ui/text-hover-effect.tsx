@@ -26,7 +26,7 @@ export const TextHoverEffect = ({
   return (
     <svg
       ref={svgRef}
-      viewBox="0 0 500 130"
+      viewBox="0 0 500 110"
       xmlns="http://www.w3.org/2000/svg"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -62,7 +62,7 @@ export const TextHoverEffect = ({
         y="52%"
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize="88"
+        fontSize="72"
         fontFamily="'Playfair Display', Georgia, serif"
         fontWeight="800"
         stroke="rgba(255,255,255,0.7)"
@@ -81,7 +81,7 @@ export const TextHoverEffect = ({
         y="52%"
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize="88"
+        fontSize="72"
         fontFamily="'Playfair Display', Georgia, serif"
         fontWeight="800"
         fill="transparent"
@@ -98,7 +98,7 @@ export const TextHoverEffect = ({
         y="52%"
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize="88"
+        fontSize="72"
         fontFamily="'Playfair Display', Georgia, serif"
         fontWeight="800"
         fill="#000000"
