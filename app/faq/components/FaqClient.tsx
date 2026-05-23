@@ -244,7 +244,7 @@ export function FaqClient() {
 
           <div className="flex flex-col md:flex-row justify-center gap-6">
             <Link
-              href="https://wa.me/919098786335"
+              href="https://wa.me/919521903155"
               className="btn-primary px-12 py-6 text-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-3"
               style={{ backgroundColor: "#000", color: "#fff", borderColor: "#000" }}
             >
@@ -252,7 +252,7 @@ export function FaqClient() {
             </Link>
 
             <Link
-              href="https://t.me/cpahustler"
+              href="https://t.me/zephrusX"
               className="btn-secondary px-12 py-6 text-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-black focus-visible:outline-offset-3"
               style={{ backgroundColor: "#000", color: "#fff", borderColor: "#000" }}
             >

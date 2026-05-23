@@ -12,8 +12,8 @@ export function OrganizationJsonLd() {
           url: "https://cpahustler.com/logo.png",
         },
         sameAs: [
-          "https://t.me/cpahustler",
-          "https://wa.me/919098786335",
+          "https://t.me/zephrusX",
+          "https://wa.me/919521903155",
         ],
         contactPoint: {
           "@type": "ContactPoint",
