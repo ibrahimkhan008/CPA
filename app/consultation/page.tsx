@@ -76,7 +76,7 @@ export default function ConsultationPage() {
                 1-on-1 CPA Mentorship Session
               </div>
 
-              <h1 className="display-font text-[5rem] md:text-[10rem] leading-[0.82] tracking-[-0.06em] font-bold uppercase mb-10">
+              <h1 className="display-font text-[5rem] md:text-[10rem] leading-[1] tracking-[-0.06em] font-bold uppercase mb-10 text-black dark:text-white">
                 ₹499
                 <br />
                 PER
