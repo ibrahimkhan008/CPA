@@ -357,7 +357,7 @@ function SectionContent({
       <div className="space-y-8">
         {(section as { subsections: { subtitle: string; content: string[] }[] }).subsections.map((sub) => (
           <div key={sub.subtitle}>
-            <h3 className="display-font text-xl md:text-2xl font-bold mb-4">
+            <h3 className="display-font text-xl md:text-2xl font-bold mb-4 text-black">
               {sub.subtitle}
             </h3>
             <div className="space-y-3">
@@ -412,7 +412,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="max-w-4xl">
-            <div className="label-text text-neutral-600 mb-6">Legal</div>
+            <div className="label-text text-neutral-600 mb-6 text-black">Legal</div>
 
             <h1 className="display-font text-[4.5rem] md:text-[9rem] leading-[0.82] tracking-[-0.06em] font-bold uppercase mb-10">
               {privacyData.title}
@@ -432,7 +432,7 @@ export default function PrivacyPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-12 gap-16">
             <div className="lg:col-span-4">
-              <div className="label-text text-neutral-600 mb-6">Contents</div>
+              <div className="label-text text-neutral-600 mb-6 text-black">Contents</div>
               <div className="border-2 border-black p-8 bg-white">
                 <nav aria-label="Privacy policy table of contents">
                   <ul className="space-y-3 list-none p-0 m-0">
@@ -458,7 +458,7 @@ export default function PrivacyPage() {
                   id={section.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
                   className="border-b border-neutral-200 py-12 first:pt-0"
                 >
-                  <h2 className="display-font text-2xl md:text-4xl font-bold mb-6 leading-tight">
+                  <h2 className="display-font text-2xl md:text-4xl font-bold mb-6 leading-tight text-black">
                     {section.title}
                   </h2>
                   <SectionContent section={section} />
@@ -484,7 +484,7 @@ export default function PrivacyPage() {
       {/* CTA */}
       <section className="py-16 md:py-24 px-6 md:px-10">
         <div className="max-w-7xl mx-auto text-center">
-          <div className="label-text text-neutral-600 mb-6">Questions?</div>
+          <div className="label-text text-neutral-600 mb-6 text-black">Questions?</div>
           <h2 className="display-font text-4xl md:text-6xl font-bold mb-8">
             Get in Touch
           </h2>
