@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useState,
+  useSyncExternalStore,
 } from "react";
 
 type Theme = "light" | "dark" | "system";
@@ -18,38 +19,54 @@ interface ThemeContextValue {
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
-  theme: "light",
-  resolvedTheme: "light",
+  theme: "dark",
+  resolvedTheme: "dark",
   setTheme: () => {},
   toggleTheme: () => {},
 });
+
+function getSystemTheme(): "light" | "dark" {
+  if (typeof window === "undefined") return "dark";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+// Syncs with system preference changes live (no page reload needed)
+const subscribeToSystemTheme = (callback: () => void) => {
+  if (typeof window === "undefined") return () => {};
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  mq.addEventListener("change", callback);
+  return () => mq.removeEventListener("change", callback);
+};
+const getSnapshot = () => getSystemTheme();
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);
 
-  const resolvedTheme = theme === "system"
-    ? window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-    : theme;
+  // Live system preference — always reflects the latest OS setting
+  const systemTheme = useSyncExternalStore(subscribeToSystemTheme, getSnapshot, () => "dark");
 
+  // Resolved theme respects system only when user has chosen "system"
+  const resolvedTheme: "light" | "dark" =
+    theme === "system" ? systemTheme : theme === "dark" ? "dark" : "light";
+
+  // On mount: load saved preference, otherwise default to dark
   useEffect(() => {
     const stored = localStorage.getItem("voidzero-theme") as Theme | null;
     if (stored === "dark" || stored === "light" || stored === "system") {
       setThemeState(stored);
     } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setThemeState(prefersDark ? "dark" : "light");
+      // No saved preference — default to dark regardless of OS setting
+      setThemeState("dark");
     }
     setMounted(true);
   }, []);
 
+  // Apply the resolved theme to <html> for Tailwind's dark: classes
   useEffect(() => {
     if (!mounted) return;
 
-    const isDark = theme === "dark" || (
-      theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches
-    );
-
+    const isDark = resolvedTheme === "dark";
     const root = document.documentElement;
     if (isDark) {
       root.classList.add("dark");
@@ -59,17 +76,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.style.colorScheme = "light";
     }
     localStorage.setItem("voidzero-theme", theme);
-  }, [theme, mounted]);
+  }, [theme, mounted, resolvedTheme]);
 
   const setTheme = useCallback((t: Theme) => {
     setThemeState(t);
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setThemeState((prev) => {
-      const next = prev === "light" ? "dark" : "light";
-      return next;
-    });
+    setThemeState((prev) => (prev === "light" ? "dark" : "light"));
   }, []);
 
   return (
