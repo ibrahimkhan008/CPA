@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getWebinarRegistrations } from "@/lib/mongodb";
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
@@ -13,6 +14,24 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Name and email are required" }, { status: 400 });
     }
 
+    // Capture IP address
+    const forwardedFor = req.headers.get("x-forwarded-for");
+    const ipAddress = forwardedFor ? forwardedFor.split(",")[0].trim() : undefined;
+
+    // Send to MongoDB
+    const registrations = await getWebinarRegistrations();
+    await registrations.insertOne({
+      fullName: name,
+      email,
+      whatsappNumber: phone || null,
+      telegramUsername: telegram || null,
+      interest: interest || null,
+      source: "webinar",
+      createdAt: new Date(),
+      ipAddress: ipAddress || null,
+    });
+
+    // Send to Telegram (keep existing behavior)
     const message = `🎙 *New Webinar Registration*
 
 *Name:* ${name}
@@ -40,7 +59,7 @@ Sent via VoidZero CPA Website`;
 
     if (!telegramRes.ok) {
       console.error("Telegram API error:", await telegramRes.text());
-      return NextResponse.json({ error: "Failed to send notification" }, { status: 500 });
+      // Don't fail the request if Telegram fails — MongoDB save succeeded
     }
 
     return NextResponse.json({ success: true });

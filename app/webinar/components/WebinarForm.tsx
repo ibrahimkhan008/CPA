@@ -6,6 +6,7 @@ export default function WebinarForm() {
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -14,6 +15,7 @@ export default function WebinarForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     const form = e.currentTarget;
     const data = {
@@ -34,10 +36,11 @@ export default function WebinarForm() {
       if (res.ok) {
         setSubmitted(true);
       } else {
-        alert("Something went wrong. Please try again.");
+        const body = await res.json().catch(() => ({}));
+        setError(body.error || "Something went wrong. Please try again.");
       }
     } catch {
-      alert("Network error. Please try again.");
+      setError("Network error. Please check your connection and try again.");
     } finally {
       setLoading(false);
     }
@@ -95,6 +98,12 @@ export default function WebinarForm() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8" suppressHydrationWarning>
+        {error && (
+          <div className="p-4 border border-red-500 text-red-400 body-text text-sm" role="alert" suppressHydrationWarning>
+            {error}
+          </div>
+        )}
+
         <div suppressHydrationWarning>
           <label htmlFor="name" className="label-text font-bold mb-3 block" suppressHydrationWarning>
             Full Name<span className="text-black ml-1">*</span>
@@ -104,8 +113,9 @@ export default function WebinarForm() {
             name="name"
             type="text"
             placeholder="Your name"
-            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-black body-text text-white"
+            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-black body-text text-white disabled:opacity-50"
             required
+            disabled={loading}
             suppressHydrationWarning
           />
         </div>
@@ -119,8 +129,9 @@ export default function WebinarForm() {
             name="email"
             type="email"
             placeholder="your@email.com"
-            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-black body-text text-white"
+            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-black body-text text-white disabled:opacity-50"
             required
+            disabled={loading}
             suppressHydrationWarning
           />
         </div>
@@ -134,8 +145,9 @@ export default function WebinarForm() {
             name="phone"
             type="tel"
             placeholder="+91 98765 43210"
-            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-black body-text text-white"
+            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-black body-text text-white disabled:opacity-50"
             required
+            disabled={loading}
             suppressHydrationWarning
           />
         </div>
@@ -149,7 +161,8 @@ export default function WebinarForm() {
             name="telegram"
             type="text"
             placeholder="@yourusername"
-            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-black body-text text-white"
+            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] placeholder:text-neutral-400 placeholder:italic bg-black body-text text-white disabled:opacity-50"
+            disabled={loading}
             suppressHydrationWarning
           />
         </div>
@@ -161,8 +174,9 @@ export default function WebinarForm() {
           <select
             id="interest"
             name="interest"
-            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] bg-black body-text text-white"
+            className="w-full border-2 border-white p-4 text-base focus:outline-none focus:border-[4px] bg-black body-text text-white disabled:opacity-50"
             required
+            disabled={loading}
             suppressHydrationWarning
           >
             <option value="">Select an option</option>
@@ -184,8 +198,7 @@ export default function WebinarForm() {
         </button>
 
         <p className="text-xs text-neutral-500 text-center leading-relaxed" suppressHydrationWarning>
-          No spam. No payment required. We&apos;ll send webinar access details to
-          your email.
+          No spam. No payment required. We&apos;ll send webinar access details to your email.
         </p>
       </form>
     </div>
