@@ -16,7 +16,6 @@ interface RazorpayOptions {
   name: string;
   description: string;
   order_id: string;
-  handler: (response: RazorpayResponse) => void;
   prefill?: {
     name?: string;
     email?: string;
@@ -28,12 +27,13 @@ interface RazorpayOptions {
   modal?: {
     ondismiss?: () => void;
   };
+  handler?: (response: RazorpayResponse) => void;
 }
 
 interface RazorpayResponse {
   razorpay_payment_id: string;
   razorpay_order_id: string;
-  razorpay_signature: string;
+  razorpay_signature?: string;
 }
 
 interface RazorpayInstance {
@@ -59,12 +59,12 @@ export default function ConsultationForm() {
     telegram: "",
     network: "",
   });
-  const [step, setStep] = useState<"form" | "payment" | "success" | "cancelled">("form");
+  const [step, setStep] = useState<"form" | "processing" | "success" | "cancelled">("form");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [inviteLinks, setInviteLinks] = useState<{ telegram: string; whatsapp: string } | null>(null);
   const razorpayLoaded = useRef(false);
-  const razorpayInit = useRef(false);
+  const orderIdRef = useRef<string>("");
 
   // Load Razorpay script
   useEffect(() => {
@@ -82,11 +82,53 @@ export default function ConsultationForm() {
     setError(null);
   };
 
+  // Poll for payment confirmation from webhook
+  const pollForConfirmation = async (orderId: string) => {
+    const maxAttempts = 30; // 30 attempts × 2s = 60s max wait
+    let attempts = 0;
+
+    const poll = async (): Promise<boolean> => {
+      attempts++;
+      try {
+        const res = await fetch("/api/consultation/status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ razorpayOrderId: orderId }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.confirmed) {
+            setInviteLinks({
+              telegram: data.inviteLink || "#",
+              whatsapp: data.whatsappLink,
+            });
+            setStep("success");
+            return true;
+          }
+        }
+      } catch {
+        // Continue polling
+      }
+
+      if (attempts >= maxAttempts) {
+        setError("Payment received but booking confirmation is taking longer. Please contact support with your payment ID.");
+        setStep("form");
+        return false;
+      }
+
+      // Wait 2 seconds before next poll
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      return poll();
+    };
+
+    return poll();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    // Validate
     if (!formData.fullName || !formData.email || !formData.phone || !formData.experience) {
       setError("Please fill in all required fields.");
       return;
@@ -101,7 +143,7 @@ export default function ConsultationForm() {
     setLoading(true);
 
     try {
-      // Step 1: Create Razorpay order
+      // Create Razorpay order
       const res = await fetch("/api/consultation/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -114,8 +156,9 @@ export default function ConsultationForm() {
       }
 
       const { orderId } = await res.json();
+      orderIdRef.current = orderId;
 
-      // Wait for Razorpay script to load
+      // Wait for Razorpay script
       let razorpayReady = false;
       for (let i = 0; i < 20; i++) {
         if (typeof window.Razorpay !== "undefined") {
@@ -129,9 +172,9 @@ export default function ConsultationForm() {
         throw new Error("Payment gateway failed to load. Please check your connection and try again.");
       }
 
-      setStep("payment");
+      setStep("processing");
 
-      // Step 2: Open Razorpay modal
+      // Open Razorpay modal
       const rzp = new window.Razorpay({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_StKEZVEnDgNJ7c",
         amount: 49900,
@@ -153,40 +196,6 @@ export default function ConsultationForm() {
             setLoading(false);
           },
         },
-        handler: async (response) => {
-          setLoading(true);
-
-          // Step 3: Verify payment on backend
-          try {
-            const verifyRes = await fetch("/api/consultation/verify-payment", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                ...formData,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_signature: response.razorpay_signature,
-              }),
-            });
-
-            const verifyData = await verifyRes.json();
-
-            if (!verifyRes.ok) {
-              throw new Error(verifyData.error || "Payment verification failed");
-            }
-
-            setInviteLinks({
-              telegram: verifyData.inviteLink,
-              whatsapp: verifyData.whatsappLink,
-            });
-            setStep("success");
-          } catch (err) {
-            setError(err instanceof Error ? err.message : "Payment verification failed. Please contact support.");
-            setStep("form");
-          } finally {
-            setLoading(false);
-          }
-        },
       });
 
       rzp.on("payment.failed", () => {
@@ -204,11 +213,19 @@ export default function ConsultationForm() {
     }
   };
 
-  const resetForm = () => {
-    setFormData({ fullName: "", email: "", phone: "", experience: "", telegram: "", network: "" });
-    setStep("form");
-    setError(null);
-  };
+  // Watch for payment completion via Razorpay redirect
+  useEffect(() => {
+    if (step !== "processing") return;
+
+    const checkPayment = () => {
+      // After Razorpay closes, start polling for webhook confirmation
+      pollForConfirmation(orderIdRef.current);
+    };
+
+    // Small delay to let Razorpay modal fully close
+    const timer = setTimeout(checkPayment, 1500);
+    return () => clearTimeout(timer);
+  }, [step]);
 
   return (
     <>
@@ -223,7 +240,7 @@ export default function ConsultationForm() {
       <form onSubmit={handleSubmit} className="lg:col-span-7 border-2 border-white p-10">
         {step === "cancelled" && (
           <div className="mb-8 p-6 border border-neutral-500 text-neutral-300 body-text">
-            <p>Payment was cancelled. Your form data has been saved — click below to try again.</p>
+            <p>Payment was cancelled. Your form data has been saved — fill in the form and try again.</p>
           </div>
         )}
 
@@ -246,7 +263,7 @@ export default function ConsultationForm() {
               autoComplete="name"
               value={formData.fullName}
               onChange={handleChange}
-              disabled={loading || step === "payment"}
+              disabled={loading || step === "processing"}
               className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none placeholder:text-neutral-500 placeholder:italic focus:border-[3px] focus:outline-none body-text disabled:opacity-50"
               required
             />
@@ -264,7 +281,7 @@ export default function ConsultationForm() {
               autoComplete="email"
               value={formData.email}
               onChange={handleChange}
-              disabled={loading || step === "payment"}
+              disabled={loading || step === "processing"}
               className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none placeholder:text-neutral-500 placeholder:italic focus:border-[3px] focus:outline-none body-text disabled:opacity-50"
               required
             />
@@ -284,7 +301,7 @@ export default function ConsultationForm() {
               autoComplete="tel"
               value={formData.phone}
               onChange={handleChange}
-              disabled={loading || step === "payment"}
+              disabled={loading || step === "processing"}
               className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none placeholder:text-neutral-500 placeholder:italic focus:border-[3px] focus:outline-none body-text disabled:opacity-50"
               required
             />
@@ -299,13 +316,11 @@ export default function ConsultationForm() {
               name="experience"
               value={formData.experience}
               onChange={handleChange}
-              disabled={loading || step === "payment"}
+              disabled={loading || step === "processing"}
               className="w-full bg-black border-b-2 border-white p-2 pb-4 outline-none focus:border-[3px] focus:outline-none text-white body-text appearance-none cursor-pointer disabled:opacity-50"
               required
             >
-              <option value="" className="bg-black text-neutral-400" disabled>
-                Select level
-              </option>
+              <option value="" className="bg-black text-neutral-400" disabled>Select level</option>
               <option value="beginner" className="bg-black text-white">Beginner</option>
               <option value="intermediate" className="bg-black text-white">Intermediate</option>
               <option value="advanced" className="bg-black text-white">Advanced</option>
@@ -326,7 +341,7 @@ export default function ConsultationForm() {
               autoComplete="off"
               value={formData.telegram}
               onChange={handleChange}
-              disabled={loading || step === "payment"}
+              disabled={loading || step === "processing"}
               className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none placeholder:text-neutral-500 placeholder:italic focus:border-[3px] focus:outline-none body-text disabled:opacity-50"
             />
           </div>
@@ -342,7 +357,7 @@ export default function ConsultationForm() {
               placeholder="e.g. OGAds, CPAGrip"
               value={formData.network}
               onChange={handleChange}
-              disabled={loading || step === "payment"}
+              disabled={loading || step === "processing"}
               className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none placeholder:text-neutral-500 placeholder:italic focus:border-[3px] focus:outline-none body-text disabled:opacity-50"
             />
           </div>
@@ -357,10 +372,10 @@ export default function ConsultationForm() {
 
             <button
               type="submit"
-              disabled={loading || step === "payment"}
+              disabled={loading || step === "processing"}
               className="btn-primary px-10 py-5 text-sm focus-visible:outline focus-visible:outline-3 focus-visible:outline-white focus-visible:outline-offset-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? "Processing..." : step === "payment" ? "Complete Payment →" : "Pay With Razorpay →"}
+              {loading ? "Creating Order..." : step === "processing" ? "Processing..." : "Pay With Razorpay →"}
             </button>
           </div>
 
