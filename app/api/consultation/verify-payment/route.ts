@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const {
-      name,
+      fullName,
       email,
       phone,
       experience,
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     } = body;
 
     // Validate required fields
-    if (!name || !email || !phone || !experience) {
+    if (!fullName || !email || !phone || !experience) {
       return NextResponse.json(
         { error: "Name, email, phone, and experience level are required" },
         { status: 400 }
@@ -57,11 +57,11 @@ export async function POST(req: NextRequest) {
 
     const bookings = await getConsultationBookings();
     await bookings.insertOne({
-      fullName: name,
+      fullName: fullName,
       email,
       phoneNumber: phone,
       experienceLevel: experience,
-      telegramUsername: telegram || null,
+      telegramUserfullName: telegram || null,
       currentCpaNetwork: network || null,
       paymentStatus: "captured",
       razorpayPaymentId: razorpay_payment_id,
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
     // 3. Send Telegram notification to payment channel (thread 2)
     const telegramMessage = `💳 *New Consultation Booking*
 
-*Name:* ${name}
+*Name:* ${fullName}
 *Email:* ${email}
 *Phone:* ${phone}
 *Experience:* ${experience}
@@ -98,7 +98,7 @@ New booking confirmed via VoidZero CPA Website`;
     try {
       await sendConsultationConfirmation({
         to: email,
-        name,
+        fullName,
         telegramInviteLink: inviteLink,
         whatsappLink: WHATSAPP_LINK,
       });
