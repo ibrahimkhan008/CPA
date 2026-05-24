@@ -34,10 +34,15 @@ export async function POST(req: NextRequest) {
     const payload = JSON.parse(rawBody);
     const event = payload.event;
 
+    console.error("Webhook received:", JSON.stringify(payload));
+
     // Handle payment.captured — this is our primary success trigger
     if (event === "payment.captured") {
       const payment = payload.payload?.payment?.entity;
       const order = payload.payload?.order?.entity;
+
+      console.error("Payment entity:", JSON.stringify(payment));
+      console.error("Order entity:", JSON.stringify(order));
 
       if (!payment || !order) {
         console.error("Missing payment or order data in webhook");
