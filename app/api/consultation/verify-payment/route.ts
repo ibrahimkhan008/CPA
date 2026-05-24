@@ -98,7 +98,7 @@ New booking confirmed via VoidZero CPA Website`;
     try {
       await sendConsultationConfirmation({
         to: email,
-        fullName,
+        name: fullName,
         telegramInviteLink: inviteLink,
         whatsappLink: WHATSAPP_LINK,
       });
