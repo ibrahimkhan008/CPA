@@ -11,10 +11,10 @@ const AMOUNT = Number(process.env.CONSULTATION_AMOUNT) || 49900; // ₹499 in pa
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, email, phone, experience, telegram, network } = body;
+    const { fullName, email, phone, experience, telegram, network } = body;
 
     // Validate required fields
-    if (!name || !email || !phone || !experience) {
+    if (!fullName || !email || !phone || !experience) {
       return NextResponse.json(
         { error: "Name, email, phone, and experience level are required" },
         { status: 400 }
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       currency: "INR",
       receipt: `consultation_${Date.now()}`,
       notes: {
-        name,
+        fullName,
         email,
         phone,
         experience,
