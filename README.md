@@ -1,6 +1,18 @@
 # VoidZero CPA — Marketing Funnel
 
-CPA affiliate marketing website for Mr. Void / DW Methods. Built with Next.js 16, Tailwind CSS v4, and a pure black & white design system.
+CPA affiliate marketing website for Mr. Void / VoidZero CPA. Built with Next.js 16, Tailwind CSS v4, and a pure black & white design system.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/import?repository-url=https%3A%2F%2Fgithub.com%2Fibrahimkhan008%2FCPA)
+
+---
+
+<div align="center">
+
+[⭐ Star this repo](https://github.com/ibrahimkhan008/CPA) • [🐛 Report Bug](https://github.com/ibrahimkhan008/CPA/issues) • [💡 Request Feature](https://github.com/ibrahimkhan008/CPA/issues)
+
+</div>
+
+---
 
 ## Tech Stack
 
@@ -79,14 +91,28 @@ lib/
 
 ## Deploy
 
-Deploy to Vercel with zero configuration:
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/import?repository-url=https%3A%2F%2Fgithub.com%2Fibrahimkhan008%2FCPA)
 
-```bash
-npm install
-vercel
-```
+All pages are statically prerendered.
 
-All pages are statically prerendered — no server needed.
+### Required Environment Variables
+
+| Variable | Description |
+|---|---|
+| `MONGODB_URI` | MongoDB connection string |
+| `RAZORPAY_KEY_ID` | Razorpay API key ID |
+| `RAZORPAY_KEY_SECRET` | Razorpay API key secret |
+| `RAZORPAY_WEBHOOK_SECRET` | Razorpay webhook signing secret |
+| `CONSULTATION_AMOUNT` | Consultation fee in paise (e.g. `49900` for ₹499) |
+| `RESEND_API_KEY` | Resend email API key |
+| `RESEND_FROM_EMAIL` | Sender email address (e.g. `payments@cpahustler.com`) |
+| `TELEGRAM_BOT_TOKEN` | Telegram bot token |
+| `TELEGRAM_CHAT_ID` | Telegram chat/group ID |
+| `TELEGRAM_MESSAGE_THREAD_ID` | Telegram thread for webinar notifications |
+| `TELEGRAM_PAYMENT_THREAD_ID` | Telegram thread for payment confirmations |
+| `NEXT_PUBLIC_RAZORPAY_KEY_ID` | Razorpay public key (client-side) |
+| `NEXT_PUBLIC_SITE_URL` | Production site URL |
+| `NEXT_PUBLIC_CLARITY_ID` | Microsoft Clarity project ID |
 
 ## License
 
