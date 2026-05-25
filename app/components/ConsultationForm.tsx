@@ -63,6 +63,14 @@ export default function ConsultationForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [inviteLinks, setInviteLinks] = useState<{ telegram: string; whatsapp: string } | null>(null);
+  const [cancelledData, setCancelledData] = useState<{
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+    experienceLevel: string;
+    telegramUsername: string | null;
+    currentCpaNetwork: string | null;
+  } | null>(null);
   const razorpayLoaded = useRef(false);
   const orderIdRef = useRef<string>("");
 
@@ -105,6 +113,17 @@ export default function ConsultationForm() {
             });
             setStep("success");
             return true;
+          }
+          if (data.cancelled) {
+            // User cancelled — restore their form data so they don't have to re-fill
+            setFormData((prev) => ({
+              ...prev,
+              fullName: prev.fullName || "",
+              email: prev.email || "",
+            }));
+            setError("Payment was not completed. Your details were saved — fill in the form and try again.");
+            setStep("form");
+            return false;
           }
         }
       } catch {
@@ -191,9 +210,19 @@ export default function ConsultationForm() {
           color: "#000000",
         },
         modal: {
-          ondismiss: () => {
+          ondismiss: async () => {
             setStep("cancelled");
             setLoading(false);
+            // Notify backend to mark the pending order as cancelled and send Telegram alert
+            try {
+              await fetch("/api/consultation/cancel", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ razorpayOrderId: orderIdRef.current }),
+              });
+            } catch {
+              // Non-fatal — user sees the cancelled state anyway
+            }
           },
         },
       });
