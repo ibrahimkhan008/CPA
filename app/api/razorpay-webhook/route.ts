@@ -6,7 +6,6 @@ import { sendConsultationConfirmation } from "@/lib/email";
 
 const WHATSAPP_LINK = "https://chat.whatsapp.com/GG6eC15vtOq9LDQen79Kj1";
 
-// Secret from Razorpay webhook settings
 const WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET!;
 
 function verifyWebhookSignature(body: string, signature: string): boolean {
@@ -25,97 +24,79 @@ export async function POST(req: NextRequest) {
     const rawBody = await req.text();
     const signature = req.headers.get("x-razorpay-signature") ?? "";
 
-    // Verify webhook authenticity
     if (!verifyWebhookSignature(rawBody, signature)) {
-      console.error("Invalid webhook signature");
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
     const payload = JSON.parse(rawBody);
     const event = payload.event;
 
-    console.error("Webhook received:", JSON.stringify(payload));
-
-    // Handle payment.captured — this is our primary success trigger
     if (event === "payment.captured") {
       const payment = payload.payload?.payment?.entity;
-      const order = payload.payload?.order?.entity;
 
-      console.error("Payment entity:", JSON.stringify(payment));
-      console.error("Order entity:", JSON.stringify(order));
-
-      if (!payment || !order) {
-        console.error("Missing payment or order data in webhook");
+      if (!payment) {
         return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
       }
 
-      const notes = order.notes ?? {};
-      const fullName = notes.name || notes.fullName || "Customer";
-      const email = notes.email || "";
-      const phone = notes.phone || "";
-      const experience = notes.experience || "";
-      const telegram = notes.telegram || "";
-      const network = notes.network || "";
-
-      // Check if already saved (idempotency)
       const bookings = await getConsultationBookings();
-      const existing = await bookings.findOne({
-        razorpayPaymentId: payment.id,
-      });
 
-      if (existing) {
-        // Already processed — skip
+      // Idempotency: skip if already processed
+      const already = await bookings.findOne({ razorpayPaymentId: payment.id });
+      if (already) {
         return NextResponse.json({ success: true, status: "already_processed" });
       }
+
+      // Look up by order ID from the payment entity
+      const orderId = payment.order_id;
+      const record = await bookings.findOne({ razorpayOrderId: orderId });
+
+      if (!record) {
+        // Order not found — could be from a different source, acknowledge silently
+        return NextResponse.json({ success: true, status: "order_not_found" });
+      }
+
+      const fullName = record.fullName;
+      const email = record.email;
 
       // Generate one-time Telegram invite link
       let inviteLink = "";
       try {
         inviteLink = await createOneTimeInviteLink();
-      } catch (linkErr) {
-        console.error("Failed to create Telegram invite link:", linkErr);
-        // Continue anyway — we still want to save the booking
+      } catch {
+        // Non-fatal — booking still confirmed without invite link
       }
 
-      // Save to MongoDB
-      await bookings.insertOne({
-        fullName,
-        email,
-        phoneNumber: phone,
-        experienceLevel: experience,
-        telegramUsername: telegram || null,
-        currentCpaNetwork: network || null,
-        paymentStatus: "captured",
-        razorpayPaymentId: payment.id,
-        razorpayOrderId: order.id,
-        razorpaySignature: "",
-        amountPaid: payment.amount,
-        currency: payment.currency,
-        source: "consultation",
-        createdAt: new Date(),
-        ipAddress: null,
-        inviteLink,
-      });
+      // Update MongoDB record
+      await bookings.updateOne(
+        { razorpayOrderId: orderId },
+        {
+          $set: {
+            paymentStatus: "captured",
+            razorpayPaymentId: payment.id,
+            inviteLink,
+          },
+        }
+      );
 
-      // Send Telegram notification to payment channel
+      // Send Telegram notification to payment thread (thread ID 2)
       const telegramMessage = `💳 *New Consultation Booking*
 
 *Name:* ${fullName}
 *Email:* ${email}
-*Phone:* ${phone}
-*Experience:* ${experience}
-*Telegram:* ${telegram || "Not provided"}
-*CPA Network:* ${network || "Not provided"}
+*Phone:* ${record.phoneNumber}
+*Experience:* ${record.experienceLevel}
+*Telegram:* ${record.telegramUsername || "Not provided"}
+*CPA Network:* ${record.currentCpaNetwork || "Not provided"}
 *Payment ID:* \`${payment.id}\`
 *Amount:* ₹${(payment.amount / 100).toFixed(0)}
 
 ---
-Booking confirmed via webhook — VoidZero CPA`;
+Booking confirmed — VoidZero CPA`;
 
       try {
         await sendTelegramMessage(telegramMessage, "2");
-      } catch (telegramErr) {
-        console.error("Telegram notification failed:", telegramErr);
+      } catch {
+        // Non-fatal
       }
 
       // Send confirmation email
@@ -127,22 +108,18 @@ Booking confirmed via webhook — VoidZero CPA`;
             telegramInviteLink: inviteLink,
             whatsappLink: WHATSAPP_LINK,
           });
-        } catch (emailErr) {
-          console.error("Email sending failed:", emailErr);
+        } catch {
+          // Non-fatal
         }
       }
 
       return NextResponse.json({ success: true, status: "processed" });
     }
 
-    // Handle payment.failed — log for now
     if (event === "payment.failed") {
-      const payment = payload.payload?.payment?.entity;
-      console.error("Payment failed:", payment?.id, payment?.error_description);
       return NextResponse.json({ success: true, status: "logged" });
     }
 
-    // Acknowledge other events
     return NextResponse.json({ success: true, status: "event_acknowledged" });
   } catch (err) {
     console.error("Webhook processing error:", err);

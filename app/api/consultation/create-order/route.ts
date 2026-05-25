@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
+import { getConsultationBookings } from "@/lib/mongodb";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID!,
@@ -39,6 +40,27 @@ export async function POST(req: NextRequest) {
         telegram: telegram || "",
         network: network || "",
       },
+    });
+
+    // Save customer data immediately — webhook won't have order notes on payment.captured
+    const bookings = await getConsultationBookings();
+    await bookings.insertOne({
+      fullName,
+      email,
+      phoneNumber: phone,
+      experienceLevel: experience,
+      telegramUsername: telegram || null,
+      currentCpaNetwork: network || null,
+      paymentStatus: "pending",
+      razorpayPaymentId: null,
+      razorpayOrderId: order.id,
+      razorpaySignature: "",
+      amountPaid: order.amount,
+      currency: order.currency,
+      source: "consultation",
+      createdAt: new Date(),
+      ipAddress: req.headers.get("x-forwarded-for")?.split(",")[0].trim() || null,
+      inviteLink: null,
     });
 
     return NextResponse.json({
