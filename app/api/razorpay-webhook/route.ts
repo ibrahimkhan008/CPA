@@ -84,8 +84,8 @@ export async function POST(req: NextRequest) {
         inviteLink,
       });
 
-      const fullName = notes.fullName || "Customer";
-      const email = notes.email || "";
+      const fullName = String(notes.fullName || "Customer");
+      const email = String(notes.email || "");
 
       // Send Telegram notification to payment thread (thread ID 2)
       const telegramMessage = `💳 *New Consultation Booking*
