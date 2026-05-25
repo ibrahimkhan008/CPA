@@ -211,18 +211,14 @@ export default function ConsultationForm() {
         },
         modal: {
           ondismiss: async () => {
+            // Await cancel so MongoDB is updated before polling starts
+            await fetch("/api/consultation/cancel", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ razorpayOrderId: orderIdRef.current }),
+            });
             setStep("cancelled");
             setLoading(false);
-            // Notify backend to mark the pending order as cancelled and send Telegram alert
-            try {
-              await fetch("/api/consultation/cancel", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ razorpayOrderId: orderIdRef.current }),
-              });
-            } catch {
-              // Non-fatal — user sees the cancelled state anyway
-            }
           },
         },
       });
