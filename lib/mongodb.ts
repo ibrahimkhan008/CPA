@@ -25,3 +25,8 @@ export async function getConsultationBookings(): Promise<Collection> {
   const db = await getDb();
   return db.collection("consultation_bookings");
 }
+
+export async function getCancelledConsultations(): Promise<Collection> {
+  const db = await getDb();
+  return db.collection("cancelled_consultations");
+}

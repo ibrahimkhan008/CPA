@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getConsultationBookings } from "@/lib/mongodb";
+import { getConsultationBookings, getCancelledConsultations } from "@/lib/mongodb";
 import { sendTelegramMessage } from "@/lib/telegram";
 
 export async function POST(req: NextRequest) {
@@ -11,23 +11,28 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Order ID required" }, { status: 400 });
     }
 
-    const bookings = await getConsultationBookings();
+    const bookings = getConsultationBookings();
+    const cancelled = getCancelledConsultations();
 
-    // Only cancel if still pending (don't overwrite a captured one)
-    const record = await bookings.findOne({
+    // Only cancel if still in bookings collection (don't double-process)
+    const record = await (await bookings).findOne({
       razorpayOrderId,
-      paymentStatus: "pending",
     });
 
     if (!record) {
-      // Already captured or doesn't exist — nothing to cancel
-      return NextResponse.json({ success: true, status: "not_pending" });
+      // Already moved or doesn't exist — nothing to cancel
+      return NextResponse.json({ success: true, status: "not_found" });
     }
 
-    await bookings.updateOne(
-      { razorpayOrderId },
-      { $set: { paymentStatus: "cancelled" } }
-    );
+    // Move to cancelled_consultations collection
+    await (await cancelled).insertOne({
+      ...record,
+      paymentStatus: "cancelled",
+      cancelledAt: new Date(),
+    });
+
+    // Remove from bookings collection
+    await (await bookings).deleteOne({ razorpayOrderId });
 
     // Notify via Telegram so you never lose a lead
     const telegramMessage = `⚠️ *Consultation — Payment Cancelled*
@@ -49,18 +54,7 @@ User cancelled or did not complete payment — VoidZero CPA`;
       // Non-fatal
     }
 
-    return NextResponse.json({
-      success: true,
-      status: "cancelled",
-      data: {
-        fullName: record.fullName,
-        email: record.email,
-        phoneNumber: record.phoneNumber,
-        experienceLevel: record.experienceLevel,
-        telegramUsername: record.telegramUsername,
-        currentCpaNetwork: record.currentCpaNetwork,
-      },
-    });
+    return NextResponse.json({ success: true, status: "cancelled" });
   } catch (err) {
     console.error("Cancel order error:", err);
     return NextResponse.json(

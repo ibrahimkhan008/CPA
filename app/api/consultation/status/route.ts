@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getConsultationBookings } from "@/lib/mongodb";
+import { getConsultationBookings, getCancelledConsultations } from "@/lib/mongodb";
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,10 +10,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Order ID required" }, { status: 400 });
     }
 
-    const bookings = await getConsultationBookings();
+    const bookings = getConsultationBookings();
+    const cancelled = getCancelledConsultations();
 
-    // Check for captured (webhook confirmed)
-    const captured = await bookings.findOne({
+    // Check consultation_bookings for captured
+    const captured = await (await bookings).findOne({
       razorpayOrderId,
       paymentStatus: "captured",
     });
@@ -26,21 +27,17 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Check for cancelled (user cancelled or didn't complete)
-    const cancelled = await bookings.findOne({
-      razorpayOrderId,
-      paymentStatus: "cancelled",
-    });
+    // Check cancelled_consultations
+    const wasCancelled = await (await cancelled).findOne({ razorpayOrderId });
 
-    if (cancelled) {
+    if (wasCancelled) {
       return NextResponse.json({
         confirmed: false,
         cancelled: true,
-        message: "Payment was not completed. Your details were saved — click below to try again.",
       });
     }
 
-    // Still pending — order created but no webhook yet (normal for UPI)
+    // Still pending — order created but no webhook yet
     return NextResponse.json({
       confirmed: false,
       pending: true,
