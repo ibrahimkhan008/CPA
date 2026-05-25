@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Check cancelled_consultations
+    // Check cancelled_consultations for abandoned payment
     const wasCancelled = await (await cancelled).findOne({ razorpayOrderId });
 
     if (wasCancelled) {

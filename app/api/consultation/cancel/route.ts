@@ -14,27 +14,28 @@ export async function POST(req: NextRequest) {
     const bookings = getConsultationBookings();
     const cancelled = getCancelledConsultations();
 
-    // Only cancel if still in bookings collection (don't double-process)
+    // Only cancel if still pending (don't overwrite a captured one)
     const record = await (await bookings).findOne({
       razorpayOrderId,
+      paymentStatus: "pending",
     });
 
     if (!record) {
-      // Already moved or doesn't exist — nothing to cancel
-      return NextResponse.json({ success: true, status: "not_found" });
+      // Already captured or doesn't exist
+      return NextResponse.json({ success: true, status: "not_pending" });
     }
 
-    // Move to cancelled_consultations collection
+    // Insert directly into cancelled_consultations
     await (await cancelled).insertOne({
       ...record,
       paymentStatus: "cancelled",
       cancelledAt: new Date(),
     });
 
-    // Remove from bookings collection
+    // Delete from consultation_bookings
     await (await bookings).deleteOne({ razorpayOrderId });
 
-    // Notify via Telegram so you never lose a lead
+    // Notify via Telegram
     const telegramMessage = `⚠️ *Consultation — Payment Cancelled*
 
 *Name:* ${record.fullName}
