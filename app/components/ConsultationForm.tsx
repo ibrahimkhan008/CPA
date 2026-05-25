@@ -211,11 +211,18 @@ export default function ConsultationForm() {
         },
         modal: {
           ondismiss: async () => {
-            // Await cancel so MongoDB is updated before polling starts
             await fetch("/api/consultation/cancel", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ razorpayOrderId: orderIdRef.current }),
+              body: JSON.stringify({
+                razorpayOrderId: orderIdRef.current,
+                fullName: formData.fullName,
+                email: formData.email,
+                phone: formData.phone,
+                experience: formData.experience,
+                telegram: formData.telegram,
+                network: formData.network,
+              }),
             });
             setStep("cancelled");
             setLoading(false);

@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import Razorpay from "razorpay";
 import { getConsultationBookings } from "@/lib/mongodb";
 import { sendTelegramMessage, createOneTimeInviteLink } from "@/lib/telegram";
 import { sendConsultationConfirmation } from "@/lib/email";
 
 const WHATSAPP_LINK = "https://chat.whatsapp.com/GG6eC15vtOq9LDQen79Kj1";
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID!,
+  key_secret: process.env.RAZORPAY_KEY_SECRET!,
+});
 
 const WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET!;
 
@@ -46,47 +52,50 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ success: true, status: "already_processed" });
       }
 
-      // Look up by order ID from the payment entity
-      const orderId = payment.order_id;
-      const record = await bookings.findOne({ razorpayOrderId: orderId });
-
-      if (!record) {
-        // Order not found — could be from a different source, acknowledge silently
-        return NextResponse.json({ success: true, status: "order_not_found" });
-      }
-
-      const fullName = record.fullName;
-      const email = record.email;
+      // Fetch the order to get customer notes (payment.captured has no order entity)
+      const order = await razorpay.orders.fetch(payment.order_id);
+      const notes = order.notes ?? {};
 
       // Generate one-time Telegram invite link
       let inviteLink = "";
       try {
         inviteLink = await createOneTimeInviteLink();
       } catch {
-        // Non-fatal — booking still confirmed without invite link
+        // Non-fatal
       }
 
-      // Update MongoDB record
-      await bookings.updateOne(
-        { razorpayOrderId: orderId },
-        {
-          $set: {
-            paymentStatus: "captured",
-            razorpayPaymentId: payment.id,
-            inviteLink,
-          },
-        }
-      );
+      // Insert directly — no pending state
+      await bookings.insertOne({
+        fullName: notes.fullName || "Customer",
+        email: notes.email || "",
+        phoneNumber: notes.phone || "",
+        experienceLevel: notes.experience || "",
+        telegramUsername: notes.telegram || null,
+        currentCpaNetwork: notes.network || null,
+        paymentStatus: "captured",
+        razorpayPaymentId: payment.id,
+        razorpayOrderId: payment.order_id,
+        razorpaySignature: "",
+        amountPaid: payment.amount,
+        currency: payment.currency,
+        source: "consultation",
+        createdAt: new Date(),
+        ipAddress: null,
+        inviteLink,
+      });
+
+      const fullName = notes.fullName || "Customer";
+      const email = notes.email || "";
 
       // Send Telegram notification to payment thread (thread ID 2)
       const telegramMessage = `💳 *New Consultation Booking*
 
 *Name:* ${fullName}
 *Email:* ${email}
-*Phone:* ${record.phoneNumber}
-*Experience:* ${record.experienceLevel}
-*Telegram:* ${record.telegramUsername || "Not provided"}
-*CPA Network:* ${record.currentCpaNetwork || "Not provided"}
+*Phone:* ${notes.phone || "—"}
+*Experience:* ${notes.experience || "—"}
+*Telegram:* ${notes.telegram || "Not provided"}
+*CPA Network:* ${notes.network || "Not provided"}
 *Payment ID:* \`${payment.id}\`
 *Amount:* ₹${(payment.amount / 100).toFixed(0)}
 
@@ -99,7 +108,6 @@ Booking confirmed — VoidZero CPA`;
         // Non-fatal
       }
 
-      // Send confirmation email
       if (email && inviteLink) {
         try {
           await sendConsultationConfirmation({
