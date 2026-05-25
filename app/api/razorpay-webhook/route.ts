@@ -108,6 +108,40 @@ Booking confirmed — VoidZero CPA`;
         // Non-fatal
       }
 
+      // Send consultation details to consultation thread (thread ID 3)
+      const consultationMessage = `✅ *Consultation Booking Confirmed*
+
+*Client:* ${fullName}
+*Email:* ${email}
+*Phone:* ${notes.phone || "—"}
+*Experience Level:* ${notes.experience || "—"}
+*Telegram:* ${notes.telegram || "Not provided"}
+*CPA Network:* ${notes.network || "Not provided"}
+
+━━━━━━━━━━━━━━━━━━━━
+*Payment Details*
+━━━━━━━━━━━━━━━━━━━━
+*Order ID:* \`${payment.order_id}\`
+*Payment ID:* \`${payment.id}\`
+*Amount Paid:* ₹${(payment.amount / 100).toFixed(0)}
+*Status:* ✅ Captured
+
+━━━━━━━━━━━━━━━━━━━━
+*Next Steps*
+━━━━━━━━━━━━━━━━━━━━
+• Reach out via Telegram to schedule the session
+• Share curriculum and onboarding materials
+• Add client to WhatsApp group
+
+---
+Booking confirmed — VoidZero CPA`;
+
+      try {
+        await sendTelegramMessage(consultationMessage, "3");
+      } catch {
+        // Non-fatal
+      }
+
       if (email && inviteLink) {
         try {
           await sendConsultationConfirmation({
