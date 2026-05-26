@@ -1,6 +1,8 @@
 # VoidZero CPA — Marketing Funnel
 
-CPA affiliate marketing website for Mr. Void / VoidZero CPA. Built with Next.js 16, Tailwind CSS v4, and a pure black & white design system.
+> CPA affiliate marketing platform built with Next.js 16. Zero fluff. Pure conversion.
+
+**Powered by:** MD Ibrahim Arman (`@ibrahimkhan008`) · [VoidZero.in](https://VoidZero.in)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/import?repository-url=https%3A%2F%2Fgithub.com%2Fibrahimkhan008%2FCPA)
 
@@ -8,21 +10,45 @@ CPA affiliate marketing website for Mr. Void / VoidZero CPA. Built with Next.js 
 
 <div align="center">
 
-[⭐ Star this repo](https://github.com/ibrahimkhan008/CPA) • [🐛 Report Bug](https://github.com/ibrahimkhan008/CPA/issues) • [💡 Request Feature](https://github.com/ibrahimkhan008/CPA/issues)
+[⭐ Star](https://github.com/ibrahimkhan008/CPA/stargazers) · [🐛 Bugs](https://github.com/ibrahimkhan008/CPA/issues) · [💡 Features](https://github.com/ibrahimkhan008/CPA/discussions)
 
 </div>
 
 ---
 
-## Tech Stack
+## 🔑 Features
+
+| Feature | Description |
+|---|---|
+| **Dark / Light / System theme** | Toggle in navbar, persisted to localStorage |
+| **Monochrome design** | Zero border-radius, black & white palette, editorial textures |
+| **TextHoverEffect** | SVG stroke trace reveal on hero title hover |
+| **PointerHighlight** | Expanding border + corner dot on CPA intro text |
+| **SneakyButton** | Sliding bar animation (CSS-only) |
+| **Responsive hamburger nav** | Works on all screen sizes |
+| **Section rules** | 4px black dividers between every section |
+| **Razorpay payments** | Consultation fee collection with webhook verification |
+| **Email notifications** | Resend-powered Telegram + email on webinar reg & payments |
+| **Rate limiting** | Order creation & webinar registration protected |
+| **Security headers** | CSP, allowlist webhooks, IDOR & injection protections |
+
+---
+
+## 🛠 Tech Stack
 
 - **Framework:** Next.js 16 (App Router, static prerendering)
 - **Styling:** Tailwind CSS v4 + CSS custom properties (monochrome design tokens)
 - **Animations:** motion (formerly framer-motion)
 - **UI Primitives:** Radix UI (dropdown-menu) + shadcn-style Button component
 - **Fonts:** Playfair Display (display), Source Serif 4 (body), JetBrains Mono (labels)
+- **Payments:** Razorpay (checkout, webhooks, webhook signature verification)
+- **Email:** Resend API
+- **Database:** MongoDB (Mongoose ODM)
+- **Notifications:** Telegram Bot API
 
-## Pages
+---
+
+## 📁 Pages
 
 | Route | Description |
 |---|---|
@@ -36,20 +62,14 @@ CPA affiliate marketing website for Mr. Void / VoidZero CPA. Built with Next.js 
 | `/proofs` | Earnings proofs — gallery with filters |
 | `/about` | About VoidZero — mission, stats, transformations |
 | `/faq` | FAQ — searchable accordion by category |
+| `/refund` | Refund policy |
+| `/shipping` | Shipping info |
 | `/terms` | Terms and Conditions |
 | `/privacy` | Privacy Policy |
 
-## Features
+---
 
-- **Dark / Light / System theme** — toggle in navbar, persisted to localStorage
-- **Monochrome design** — zero border-radius, black & white palette, editorial textures
-- **TextHoverEffect** — SVG stroke trace reveal on hero title hover
-- **PointerHighlight** — expanding border + corner dot on CPA intro text
-- **SneakyButton** — sliding bar animation (CSS-only, available in `components/ui/sneaky-button.tsx`)
-- **Responsive hamburger nav** — works on all screen sizes
-- **Section rules** — 4px black dividers between every section
-
-## Getting Started
+## 🚀 Getting Started
 
 ```bash
 # Install dependencies
@@ -60,60 +80,108 @@ npm run dev
 
 # Production build
 npm run build
+
+# Lint
+npm run lint
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-## Project Structure
+---
 
+## 🔒 Security
+
+This codebase has been through a full security audit. See:
+
+- **[SECURITY_AUDIT_REPORT.md](SECURITY_AUDIT_REPORT.md)** — All findings documented (pre-patch)
+- **[SECURITY_PATCH_REPORT.md](SECURITY_PATCH_REPORT.md)** — Applied fixes with file references
+
+Key protections in place:
+- IDOR mitigation in payment status endpoint
+- NoSQL injection prevention via input sanitization
+- Timing-attack resistant constant-time email comparison
+- Webhook event allowlist (only `payment.captured`, `payment.failed`)
+- Order creation & webinar registration rate limiting
+- XSS prevention via HTML encoding + CSP headers
+- CSP policy with GTM allowlist (no unsafe-eval)
+
+---
+
+## 🔧 Environment Variables
+
+Copy `.env.local.example` to `.env.local` and fill in the values:
+
+```bash
+# Database
+MONGODB_URI=
+
+# Razorpay
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+RAZORPAY_WEBHOOK_SECRET=
+NEXT_PUBLIC_RAZORPAY_KEY_ID=
+
+# Email (Resend)
+RESEND_API_KEY=
+RESEND_FROM_EMAIL=
+
+# Telegram Notifications
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+TELEGRAM_MESSAGE_THREAD_ID=   # Webinar registrations
+TELEGRAM_PAYMENT_THREAD_ID=    # Payment confirmations
+
+# Site
+NEXT_PUBLIC_SITE_URL=
+NEXT_PUBLIC_CLARITY_ID=        # Microsoft Clarity
+
+# Consultation
+CONSULTATION_AMOUNT=           # In paise, e.g. 49900 = ₹499
 ```
-app/
-  layout.tsx          # Root layout (navbar, footer, ThemeProvider)
-  page.tsx            # Home page
-  globals.css         # Design tokens, typography, textures, buttons
-  components/
-    Navbar.tsx        # Hamburger nav + theme toggle
-  [page]/page.tsx    # All routes
 
-components/
-  ThemeProvider.tsx  # Dark/light/system theme context
-  ui/
-    text-hover-effect.tsx
-    pointer-highlight.tsx
-    sneaky-button.tsx
-    dropdown-menu.tsx
-    button.tsx
-    ThemeToggle.tsx
+---
 
-lib/
-  utils.ts           # cn() utility (clsx + tailwind-merge)
-```
-
-## Deploy
+## 🌐 Deploy
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/import?repository-url=https%3A%2F%2Fgithub.com%2Fibrahimkhan008%2FCPA)
 
-All pages are statically prerendered.
+All pages are statically prerendered. API routes run on Edge Runtime.
 
-### Required Environment Variables
+> **Note:** The `/api/razorpay-webhook` route must be set to `nodejs18.x` or `nodejs20.x` runtime — Razorpay webhooks use the `crypto` module which is not available on the Edge runtime.
 
-| Variable | Description |
-|---|---|
-| `MONGODB_URI` | MongoDB connection string |
-| `RAZORPAY_KEY_ID` | Razorpay API key ID |
-| `RAZORPAY_KEY_SECRET` | Razorpay API key secret |
-| `RAZORPAY_WEBHOOK_SECRET` | Razorpay webhook signing secret |
-| `CONSULTATION_AMOUNT` | Consultation fee in paise (e.g. `49900` for ₹499) |
-| `RESEND_API_KEY` | Resend email API key |
-| `RESEND_FROM_EMAIL` | Sender email address (e.g. `payments@cpahustler.com`) |
-| `TELEGRAM_BOT_TOKEN` | Telegram bot token |
-| `TELEGRAM_CHAT_ID` | Telegram chat/group ID |
-| `TELEGRAM_MESSAGE_THREAD_ID` | Telegram thread for webinar notifications |
-| `TELEGRAM_PAYMENT_THREAD_ID` | Telegram thread for payment confirmations |
-| `NEXT_PUBLIC_RAZORPAY_KEY_ID` | Razorpay public key (client-side) |
-| `NEXT_PUBLIC_SITE_URL` | Production site URL |
-| `NEXT_PUBLIC_CLARITY_ID` | Microsoft Clarity project ID |
+---
 
-## License
+## 📂 Project Structure
 
-Private. All content © Mr. Void / DW Methods 2026.
+```
+CPA/
+├── app/                      # Next.js App Router pages & API routes
+│   ├── api/                  # API endpoints
+│   │   ├── consultation/     # create-order, status, verify-payment, cancel
+│   │   ├── razorpay-webhook/ # Payment webhook handler
+│   │   └── webinar-register/ # Webinar registration
+│   └── [page]/page.tsx       # All public pages
+├── components/               # Shared UI components
+│   ├── ui/                   # Primitives (button, dropdown, toast, etc.)
+│   └── shugar/              # Extra UI components
+├── lib/                      # Utilities & integrations
+│   ├── email.ts             # Resend email wrapper
+│   ├── mongodb.ts           # MongoDB connection singleton
+│   ├── security.ts          # htmlEncode, validateCommunityUrl, timingSafeEqual
+│   ├── telegram.ts          # Telegram bot notification wrapper
+│   └── utils.ts             # cn() utility (clsx + tailwind-merge)
+├── public/                   # Static assets
+├── next.config.ts            # CSP headers, image domains, output config
+├── globals.css              # Design tokens, typography, textures
+└── package.json
+```
+
+---
+
+## 🔐 Security Policy
+
+If you find a security vulnerability, please **do not open a public GitHub issue**. Instead, contact the maintainer directly.
+
+---
+
+*Maintained by [MD Ibrahim Arman](https://github.com/ibrahimkhan008) · All content © Mr. Void / VoidZero CPA 2026*
