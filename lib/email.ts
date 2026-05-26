@@ -1,6 +1,24 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error("RESEND_API_KEY is not configured");
+  }
+  return new Resend(process.env.RESEND_API_KEY);
+}
+
+/**
+ * HTML-encode a string to prevent XSS when inserting user data into raw email HTML.
+ * Encodes: & < > " '
+ */
+function htmlEncode(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
 export async function sendConsultationConfirmation(params: {
   to: string;
@@ -8,6 +26,13 @@ export async function sendConsultationConfirmation(params: {
   telegramInviteLink: string;
   whatsappLink: string;
 }): Promise<void> {
+  const resend = getResend();
+  // SECURITY FIX: HTML-encode all user-supplied values before inserting into raw HTML
+  // to prevent stored XSS via email client script execution.
+  const safeName = htmlEncode(params.name);
+  const safeTelegram = htmlEncode(params.telegramInviteLink);
+  const safeWhatsapp = htmlEncode(params.whatsappLink);
+
   const html = `<!DOCTYPE html>
 <html>
 <head>
@@ -21,13 +46,13 @@ export async function sendConsultationConfirmation(params: {
       <p style="font-family:monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#a3a3a3;margin:0 0 10px;">Consultation Confirmed</p>
       <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:3rem;font-weight:bold;margin:0 0 20px;padding:0;">YOU'RE IN!</h1>
       <p style="font-size:18px;line-height:1.6;color:#a3a3a3;margin:0 0 30px;">
-        Hi ${params.name}, your CPA consultation booking is confirmed. Join the community below and we'll reach out with next steps.
+        Hi ${safeName}, your CPA consultation booking is confirmed. Join the community below and we'll reach out with next steps.
       </p>
       <div style="margin:30px 0;">
-        <a href="${params.telegramInviteLink}" style="display:inline-block;background:#fff;color:#000;text-decoration:none;padding:16px 32px;font-family:monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Join Telegram Group →</a>
+        <a href="${safeTelegram}" style="display:inline-block;background:#fff;color:#000;text-decoration:none;padding:16px 32px;font-family:monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Join Telegram Group →</a>
       </div>
       <div style="margin:20px 0;">
-        <a href="${params.whatsappLink}" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;padding:16px 32px;font-family:monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Join WhatsApp Group →</a>
+        <a href="${safeWhatsapp}" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;padding:16px 32px;font-family:monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Join WhatsApp Group →</a>
       </div>
       <p style="font-size:14px;color:#a3a3a3;line-height:1.6;margin:0;">See you in the community. Bring your questions!<br><br>— Mr. Void, VoidZero CPA</p>
     </div>

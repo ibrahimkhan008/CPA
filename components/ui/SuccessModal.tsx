@@ -8,7 +8,25 @@ interface SuccessModalProps {
   onClose: () => void;
 }
 
+// SECURITY FIX: Validate that links point to expected domains before rendering in href.
+// Prevents javascript: URLs or unexpected schemes from being rendered.
+function validateLink(url: string, allowed: string[]): string {
+  try {
+    const parsed = new URL(url);
+    if (allowed.includes(parsed.hostname)) return url;
+  } catch {
+    // fall through to default
+  }
+  return "#";
+}
+
+const ALLOWED_TELEGRAM = ["t.me", "telegram.me", "web.telegram.org"];
+const ALLOWED_WHATSAPP = ["chat.whatsapp.com"];
+
 export default function SuccessModal({ telegramLink, whatsappLink, onClose }: SuccessModalProps) {
+  const safeTelegram = validateLink(telegramLink, ALLOWED_TELEGRAM);
+  const safeWhatsApp = validateLink(whatsappLink, ALLOWED_WHATSAPP);
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -41,7 +59,7 @@ export default function SuccessModal({ telegramLink, whatsappLink, onClose }: Su
 
       {/* Modal */}
       <div className="relative w-full max-w-lg border-2 border-white bg-black p-10 md:p-14 text-white overflow-y-auto max-h-[90vh]">
-        <div className="noise"></div>
+        <div className="noise" />
 
         {/* Close button */}
         <button
@@ -90,7 +108,7 @@ export default function SuccessModal({ telegramLink, whatsappLink, onClose }: Su
           {/* Community links */}
           <div className="space-y-4 mb-10">
             <a
-              href={telegramLink}
+              href={safeTelegram}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary px-8 py-5 text-sm w-full flex items-center justify-between gap-4 group"
@@ -102,7 +120,7 @@ export default function SuccessModal({ telegramLink, whatsappLink, onClose }: Su
             </a>
 
             <a
-              href={whatsappLink}
+              href={safeWhatsApp}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary px-8 py-5 text-sm w-full flex items-center justify-center gap-3"
@@ -115,16 +133,16 @@ export default function SuccessModal({ telegramLink, whatsappLink, onClose }: Su
             </a>
           </div>
 
-          {/* Next steps */}
+          {/* Next steps — SECURITY FIX: no dangerouslySetInnerHTML, plain text only */}
           <div className="border-t border-white/20 pt-8 space-y-4">
             {[
               "Join both communities for full access",
-              "You&apos;ll receive session details via email",
-              "Bring your questions — Q&amp;A is included",
+              "You'll receive session details via email",
+              "Bring your questions — Q&A is included",
             ].map((step, i) => (
               <div key={i} className="flex items-start gap-4">
                 <span className="label-text text-neutral-500 shrink-0">{String(i + 1).padStart(2, "0")}</span>
-                <span className="text-neutral-300 body-text text-base" dangerouslySetInnerHTML={{ __html: step }} />
+                <span className="text-neutral-300 body-text text-base">{step}</span>
               </div>
             ))}
           </div>

@@ -50,6 +50,11 @@ interface FormData {
   network: string;
 }
 
+// Input sanitization — strip HTML tags and trim whitespace
+function sanitize(value: string): string {
+  return value.replace(/<[^>]*>/g, "").trim().slice(0, 500);
+}
+
 export default function ConsultationForm() {
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
@@ -63,16 +68,9 @@ export default function ConsultationForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [inviteLinks, setInviteLinks] = useState<{ telegram: string; whatsapp: string } | null>(null);
-  const [cancelledData, setCancelledData] = useState<{
-    fullName: string;
-    email: string;
-    phoneNumber: string;
-    experienceLevel: string;
-    telegramUsername: string | null;
-    currentCpaNetwork: string | null;
-  } | null>(null);
   const razorpayLoaded = useRef(false);
   const orderIdRef = useRef<string>("");
+  const sanitizedAmountRef = useRef<number>(49900);
 
   // Load Razorpay script
   useEffect(() => {
@@ -101,7 +99,10 @@ export default function ConsultationForm() {
         const res = await fetch("/api/consultation/status", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ razorpayOrderId: orderId }),
+          // SECURITY FIX: Include email to prove ownership of the booking.
+          // The /api/consultation/status endpoint now requires email to return invite links
+          // and payment status, preventing an attacker from enumerating arbitrary orders.
+          body: JSON.stringify({ razorpayOrderId: orderId, email: formData.email }),
         });
 
         if (res.ok) {
@@ -115,12 +116,6 @@ export default function ConsultationForm() {
             return true;
           }
           if (data.cancelled) {
-            // User cancelled — restore their form data so they don't have to re-fill
-            setFormData((prev) => ({
-              ...prev,
-              fullName: prev.fullName || "",
-              email: prev.email || "",
-            }));
             setError("Payment was not completed. Your details were saved — fill in the form and try again.");
             setStep("form");
             return false;
@@ -162,11 +157,27 @@ export default function ConsultationForm() {
     setLoading(true);
 
     try {
+      // SECURITY FIX: Verify public key is present before any payment flow.
+      // If missing in production, fail immediately — do NOT silently fall back to a test key.
+      if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID) {
+        throw new Error("Payment configuration error. Please refresh the page or contact support.");
+      }
+
+      // Sanitize all inputs before sending to server
+      const sanitized = {
+        fullName: sanitize(formData.fullName),
+        email: formData.email.toLowerCase().trim(),
+        phone: sanitize(formData.phone),
+        experience: formData.experience,
+        telegram: sanitize(formData.telegram),
+        network: sanitize(formData.network),
+      };
+
       // Create Razorpay order
       const res = await fetch("/api/consultation/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(sanitized),
       });
 
       if (!res.ok) {
@@ -174,8 +185,13 @@ export default function ConsultationForm() {
         throw new Error(data.error || "Failed to create payment order");
       }
 
-      const { orderId } = await res.json();
+      // SECURITY FIX: Amount comes from SERVER — client receives it in the response.
+      // Never trust hardcoded amounts in client-side code.
+      const { orderId, amount } = await res.json();
       orderIdRef.current = orderId;
+
+      // amount from server is in paise (Razorpay format); fallback to ₹499 in paise
+      sanitizedAmountRef.current = amount ?? 49900;
 
       // Wait for Razorpay script
       let razorpayReady = false;
@@ -195,16 +211,16 @@ export default function ConsultationForm() {
 
       // Open Razorpay modal
       const rzp = new window.Razorpay({
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_StKEZVEnDgNJ7c",
-        amount: 49900,
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: sanitizedAmountRef.current,
         currency: "INR",
         name: "VoidZero CPA",
         description: "1-on-1 CPA Consultation Session",
         order_id: orderId,
         prefill: {
-          name: formData.fullName,
-          email: formData.email,
-          contact: formData.phone,
+          name: sanitized.fullName,
+          email: sanitized.email,
+          contact: sanitized.phone,
         },
         theme: {
           color: "#000000",
@@ -216,12 +232,12 @@ export default function ConsultationForm() {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 razorpayOrderId: orderIdRef.current,
-                fullName: formData.fullName,
-                email: formData.email,
-                phone: formData.phone,
-                experience: formData.experience,
-                telegram: formData.telegram,
-                network: formData.network,
+                fullName: sanitized.fullName,
+                email: sanitized.email,
+                phone: sanitized.phone,
+                experience: sanitized.experience,
+                telegram: sanitized.telegram,
+                network: sanitized.network,
               }),
             });
             setStep("cancelled");
@@ -250,7 +266,6 @@ export default function ConsultationForm() {
     if (step !== "processing") return;
 
     const checkPayment = () => {
-      // After Razorpay closes, start polling for webhook confirmation
       pollForConfirmation(orderIdRef.current);
     };
 
@@ -298,6 +313,7 @@ export default function ConsultationForm() {
               disabled={loading || step === "processing"}
               className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none placeholder:text-neutral-500 placeholder:italic focus:border-[3px] focus:outline-none body-text disabled:opacity-50"
               required
+              maxLength={200}
             />
           </div>
 
@@ -316,6 +332,7 @@ export default function ConsultationForm() {
               disabled={loading || step === "processing"}
               className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none placeholder:text-neutral-500 placeholder:italic focus:border-[3px] focus:outline-none body-text disabled:opacity-50"
               required
+              maxLength={320}
             />
           </div>
         </div>
@@ -336,6 +353,7 @@ export default function ConsultationForm() {
               disabled={loading || step === "processing"}
               className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none placeholder:text-neutral-500 placeholder:italic focus:border-[3px] focus:outline-none body-text disabled:opacity-50"
               required
+              maxLength={20}
             />
           </div>
 
@@ -375,6 +393,7 @@ export default function ConsultationForm() {
               onChange={handleChange}
               disabled={loading || step === "processing"}
               className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none placeholder:text-neutral-500 placeholder:italic focus:border-[3px] focus:outline-none body-text disabled:opacity-50"
+              maxLength={100}
             />
           </div>
 
@@ -391,6 +410,7 @@ export default function ConsultationForm() {
               onChange={handleChange}
               disabled={loading || step === "processing"}
               className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none placeholder:text-neutral-500 placeholder:italic focus:border-[3px] focus:outline-none body-text disabled:opacity-50"
+              maxLength={200}
             />
           </div>
         </div>
@@ -399,7 +419,7 @@ export default function ConsultationForm() {
           <div className="flex justify-between items-center flex-wrap gap-8 mb-10">
             <div>
               <div className="label-text text-neutral-400 mb-2">Consultation Fee</div>
-              <div className="display-font text-6xl font-bold">₹499</div>
+              <div className="display-font text-6xl font-bold">₹{((sanitizedAmountRef.current ?? 49900) / 100).toFixed(0)}</div>
             </div>
 
             <button

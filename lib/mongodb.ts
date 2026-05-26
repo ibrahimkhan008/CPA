@@ -9,7 +9,17 @@ let cachedDb: Db | null = null;
 export async function getDb(): Promise<Db> {
   if (cachedDb) return cachedDb;
   if (!cachedClient) {
-    cachedClient = new MongoClient(MONGODB_URI);
+    // SECURITY: Explicit TLS + bounded timeouts.
+    // socketTimeoutMS must be LOW (< webhook timeout) so Razorpay gets fast 500s
+    // and retries cleanly instead of waiting 60s+ for MongoDB to time out.
+    // With socketTimeoutMS:10s, Vercel Edge (30s limit) stays well ahead of MongoDB.
+    cachedClient = new MongoClient(MONGODB_URI, {
+      tls: true,
+      tlsAllowInvalidCertificates: false,
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 10000,
+      socketTimeoutMS: 10000, // fail fast — Razorpay retries, idempotency saves us
+    });
     await cachedClient.connect();
   }
   cachedDb = cachedClient.db(DB_NAME);
