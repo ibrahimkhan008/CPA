@@ -1,4 +1,6 @@
-# Next.js 16 quirks (read node_modules/next/dist/docs/01-app/01-getting-started/ first)
+# CLAUDE.md
+
+h3llo world
   - `metadata` exports ONLY from Server Components — no `"use client"` + metadata on same file
   - Pattern for interactive pages: `page.tsx` (server, metadata only) + `*Client.tsx` (client, hooks)
   - `@vercel/analytics/next` and `@vercel/speed-insights/next` use `/next` suffix import path
