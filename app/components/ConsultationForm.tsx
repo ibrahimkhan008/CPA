@@ -148,6 +148,13 @@ export default function ConsultationForm() {
       return;
     }
 
+    // Strip +91 prefix for validation — accept both +91 and raw 10-digit formats
+    const cleanPhone = formData.phone.replace(/^\+91\s*/, "").replace(/\D/g, "");
+    if (cleanPhone.length !== 10) {
+      setError("Phone number must be exactly 10 digits (no +91).");
+      return;
+    }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       setError("Please enter a valid email address.");
@@ -164,10 +171,11 @@ export default function ConsultationForm() {
       }
 
       // Sanitize all inputs before sending to server
+      const cleanPhone = formData.phone.replace(/^\+91\s*/, "").replace(/\D/g, "");
       const sanitized = {
         fullName: sanitize(formData.fullName),
         email: formData.email.toLowerCase().trim(),
-        phone: sanitize(formData.phone),
+        phone: cleanPhone,
         experience: formData.experience,
         telegram: sanitize(formData.telegram),
         network: sanitize(formData.network),
@@ -346,7 +354,9 @@ export default function ConsultationForm() {
               id="phone"
               name="phone"
               type="tel"
-              placeholder="+91 98765 43210"
+              inputMode="numeric"
+              pattern="[0-9]{10}"
+              placeholder="9876543210"
               autoComplete="tel"
               value={formData.phone}
               onChange={handleChange}
