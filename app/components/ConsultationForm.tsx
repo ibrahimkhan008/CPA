@@ -45,6 +45,7 @@ interface FormData {
   fullName: string;
   email: string;
   phone: string;
+  countryCode: string;
   experience: string;
   telegram: string;
   network: string;
@@ -55,11 +56,81 @@ function sanitize(value: string): string {
   return value.replace(/<[^>]*>/g, "").trim().slice(0, 500);
 }
 
+const CODES: Array<{ code: string; label: string; digits: number }> = [
+  { code: "+91", label: "+91 India", digits: 10 },
+  { code: "+1", label: "+1 USA / Canada", digits: 10 },
+  { code: "+44", label: "+44 UK", digits: 10 },
+  { code: "+92", label: "+92 Pakistan", digits: 10 },
+  { code: "+880", label: "+880 Bangladesh", digits: 10 },
+  { code: "+94", label: "+94 Sri Lanka", digits: 9 },
+  { code: "+60", label: "+60 Malaysia", digits: 9 },
+  { code: "+65", label: "+65 Singapore", digits: 8 },
+  { code: "+66", label: "+66 Thailand", digits: 9 },
+  { code: "+62", label: "+62 Indonesia", digits: 11 },
+  { code: "+84", label: "+84 Vietnam", digits: 9 },
+  { code: "+63", label: "+63 Philippines", digits: 10 },
+  { code: "+95", label: "+95 Myanmar", digits: 9 },
+  { code: "+856", label: "+856 Laos", digits: 9 },
+  { code: "+855", label: "+855 Cambodia", digits: 9 },
+  { code: "+673", label: "+673 Brunei", digits: 7 },
+  { code: "+82", label: "+82 South Korea", digits: 10 },
+  { code: "+81", label: "+81 Japan", digits: 10 },
+  { code: "+86", label: "+86 China", digits: 11 },
+  { code: "+852", label: "+852 Hong Kong", digits: 8 },
+  { code: "+886", label: "+886 Taiwan", digits: 9 },
+  { code: "+61", label: "+61 Australia", digits: 9 },
+  { code: "+64", label: "+64 New Zealand", digits: 9 },
+  { code: "+971", label: "+971 UAE", digits: 9 },
+  { code: "+966", label: "+966 Saudi Arabia", digits: 9 },
+  { code: "+968", label: "+968 Oman", digits: 8 },
+  { code: "+974", label: "+974 Qatar", digits: 8 },
+  { code: "+965", label: "+965 Kuwait", digits: 8 },
+  { code: "+973", label: "+973 Bahrain", digits: 8 },
+  { code: "+961", label: "+961 Lebanon", digits: 8 },
+  { code: "+962", label: "+962 Jordan", digits: 9 },
+  { code: "+963", label: "+963 Syria", digits: 9 },
+  { code: "+20", label: "+20 Egypt", digits: 10 },
+  { code: "+216", label: "+216 Tunisia", digits: 8 },
+  { code: "+213", label: "+213 Algeria", digits: 9 },
+  { code: "+212", label: "+212 Morocco", digits: 9 },
+  { code: "+234", label: "+234 Nigeria", digits: 10 },
+  { code: "+254", label: "+254 Kenya", digits: 9 },
+  { code: "+255", label: "+255 Tanzania", digits: 9 },
+  { code: "+256", label: "+256 Uganda", digits: 9 },
+  { code: "+27", label: "+27 South Africa", digits: 9 },
+  { code: "+33", label: "+33 France", digits: 9 },
+  { code: "+49", label: "+49 Germany", digits: 10 },
+  { code: "+34", label: "+34 Spain", digits: 9 },
+  { code: "+39", label: "+39 Italy", digits: 10 },
+  { code: "+31", label: "+31 Netherlands", digits: 9 },
+  { code: "+32", label: "+32 Belgium", digits: 9 },
+  { code: "+41", label: "+41 Switzerland", digits: 9 },
+  { code: "+43", label: "+43 Austria", digits: 10 },
+  { code: "+45", label: "+45 Denmark", digits: 8 },
+  { code: "+46", label: "+46 Sweden", digits: 9 },
+  { code: "+47", label: "+47 Norway", digits: 8 },
+  { code: "+358", label: "+358 Finland", digits: 9 },
+  { code: "+30", label: "+30 Greece", digits: 10 },
+  { code: "+90", label: "+90 Turkey", digits: 10 },
+  { code: "+98", label: "+98 Iran", digits: 10 },
+  { code: "+93", label: "+93 Afghanistan", digits: 9 },
+  { code: "+977", label: "+977 Nepal", digits: 9 },
+  { code: "+960", label: "+960 Maldives", digits: 7 },
+  { code: "+51", label: "+51 Peru", digits: 9 },
+  { code: "+54", label: "+54 Argentina", digits: 10 },
+  { code: "+55", label: "+55 Brazil", digits: 11 },
+  { code: "+56", label: "+56 Chile", digits: 9 },
+  { code: "+57", label: "+57 Colombia", digits: 10 },
+  { code: "+52", label: "+52 Mexico", digits: 10 },
+  { code: "+53", label: "+53 Cuba", digits: 8 },
+];
+
 export default function ConsultationForm() {
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     email: "",
     phone: "",
+    countryCode: "+91",
     experience: "",
     telegram: "",
     network: "",
@@ -71,6 +142,8 @@ export default function ConsultationForm() {
   const razorpayLoaded = useRef(false);
   const orderIdRef = useRef<string>("");
   const sanitizedAmountRef = useRef<number>(49900);
+
+  const requiredDigits = CODES.find((c) => c.code === formData.countryCode)?.digits ?? 10;
 
   // Load Razorpay script
   useEffect(() => {
@@ -88,7 +161,24 @@ export default function ConsultationForm() {
     setError(null);
   };
 
-  // Poll for payment confirmation from webhook
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      phone: e.target.value.replace(/\D/g, "").slice(0, requiredDigits),
+    }));
+    setError(null);
+  };
+
+  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCode = e.target.value;
+    const newDigits = CODES.find((c) => c.code === newCode)?.digits ?? 10;
+    setFormData((prev) => ({
+      ...prev,
+      countryCode: newCode,
+      phone: prev.phone.replace(/\D/g, "").slice(0, newDigits),
+    }));
+    setError(null);
+  };
   const pollForConfirmation = async (orderId: string) => {
     const maxAttempts = 30; // 30 attempts × 2s = 60s max wait
     let attempts = 0;
@@ -148,10 +238,8 @@ export default function ConsultationForm() {
       return;
     }
 
-    // Strip +91 prefix for validation — accept both +91 and raw 10-digit formats
-    const cleanPhone = formData.phone.replace(/^\+91\s*/, "").replace(/\D/g, "");
-    if (cleanPhone.length !== 10) {
-      setError("Phone number must be exactly 10 digits (no +91).");
+    if (formData.phone.length !== requiredDigits) {
+      setError("Phone must be " + requiredDigits + " digits for " + formData.countryCode + ". You entered " + formData.phone.length + " digits.");
       return;
     }
 
@@ -161,6 +249,7 @@ export default function ConsultationForm() {
       return;
     }
 
+    const fullPhone = formData.countryCode + formData.phone;
     setLoading(true);
 
     try {
@@ -170,12 +259,11 @@ export default function ConsultationForm() {
         throw new Error("Payment configuration error. Please refresh the page or contact support.");
       }
 
-      // Sanitize all inputs before sending to server
-      const cleanPhone = formData.phone.replace(/^\+91\s*/, "").replace(/\D/g, "");
       const sanitized = {
         fullName: sanitize(formData.fullName),
         email: formData.email.toLowerCase().trim(),
-        phone: cleanPhone,
+        phone: formData.phone,
+        countryCode: formData.countryCode,
         experience: formData.experience,
         telegram: sanitize(formData.telegram),
         network: sanitize(formData.network),
@@ -228,7 +316,7 @@ export default function ConsultationForm() {
         prefill: {
           name: sanitized.fullName,
           email: sanitized.email,
-          contact: sanitized.phone,
+          contact: fullPhone,
         },
         theme: {
           color: "#000000",
@@ -242,7 +330,7 @@ export default function ConsultationForm() {
                 razorpayOrderId: orderIdRef.current,
                 fullName: sanitized.fullName,
                 email: sanitized.email,
-                phone: sanitized.phone,
+                phone: fullPhone,
                 experience: sanitized.experience,
                 telegram: sanitized.telegram,
                 network: sanitized.network,
@@ -350,21 +438,34 @@ export default function ConsultationForm() {
             <label htmlFor="phone" className="label-text text-neutral-400 mb-2 block">
               Phone Number <span className="text-white">*</span>
             </label>
-            <input
-              id="phone"
-              name="phone"
-              type="tel"
-              inputMode="numeric"
-              pattern="[0-9]{10}"
-              placeholder="9876543210"
-              autoComplete="tel"
-              value={formData.phone}
-              onChange={handleChange}
-              disabled={loading || step === "processing"}
-              className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none placeholder:text-neutral-500 placeholder:italic focus:border-[3px] focus:outline-none body-text disabled:opacity-50"
-              required
-              maxLength={20}
-            />
+            <div className="flex gap-2 items-center">
+              <select
+                id="countryCode"
+                name="countryCode"
+                value={formData.countryCode}
+                onChange={handleCountryChange}
+                disabled={loading || step === "processing"}
+                className="bg-black border-b-2 border-white p-2 pb-4 outline-none text-white body-text appearance-none cursor-pointer disabled:opacity-50"
+              >
+                {CODES.map((c) => (
+                  <option key={c.code} value={c.code} className="bg-black">{c.label}</option>
+                ))}
+              </select>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                inputMode="numeric"
+                placeholder={requiredDigits + " digits"}
+                autoComplete="tel"
+                value={formData.phone}
+                onChange={handlePhoneChange}
+                disabled={loading || step === "processing"}
+                className="w-full bg-transparent border-b-2 border-white p-2 pb-4 outline-none placeholder:text-neutral-500 focus:border-[3px] focus:outline-none body-text disabled:opacity-50"
+                required
+                maxLength={11}
+              />
+            </div>
           </div>
 
           <div>
