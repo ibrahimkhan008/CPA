@@ -159,7 +159,7 @@ export default function ConsultationForm() {
     try {
       // SECURITY FIX: Verify public key is present before any payment flow.
       // If missing in production, fail immediately — do NOT silently fall back to a test key.
-      if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID) {
+      if (!process.env.RAZORPAY_KEY_ID) {
         throw new Error("Payment configuration error. Please refresh the page or contact support.");
       }
 
@@ -211,7 +211,7 @@ export default function ConsultationForm() {
 
       // Open Razorpay modal
       const rzp = new window.Razorpay({
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        key: process.env.RAZORPAY_KEY_ID,
         amount: sanitizedAmountRef.current,
         currency: "INR",
         name: "VoidZero CPA",
