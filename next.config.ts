@@ -22,7 +22,7 @@ const securityHeaders = [
   },
   {
     key: "Cross-Origin-Opener-Policy",
-    value: "same-origin",
+    value: "same-origin-allow-popups",
   },
   {
     key: "Cross-Origin-Resource-Policy",
@@ -30,7 +30,7 @@ const securityHeaders = [
   },
   {
     key: "Cross-Origin-Embedder-Policy",
-    value: "require-corp",
+    value: "unsafe-none",
   },
   // SECURITY: Content-Security-Policy — mitigates XSS and injection at browser level.
   // unsafe-inline required for GTM (loaded in layout.tsx). unsafe-eval NOT included.
