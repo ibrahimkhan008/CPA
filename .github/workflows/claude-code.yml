@@ -1,0 +1,32 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  issue_comment:
+    types: [created]
+
+jobs:
+  claude:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Set custom API endpoint
+        run: |
+          if [ "${{ secrets.ANTHROPIC_BASE_URL }}" != "" ]; then
+            echo "ANTHROPIC_BASE_URL=${{ secrets.ANTHROPIC_BASE_URL }}" >> $GITHUB_ENV
+          fi
+        shell: bash
+
+      - name: Claude Code Review
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.CLAUDE_API_KEY }}
