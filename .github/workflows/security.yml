@@ -16,6 +16,13 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 2
 
+      - name: Set custom API endpoint
+        run: |
+          if [ "${{ secrets.ANTHROPIC_BASE_URL }}" != "" ]; then
+            echo "ANTHROPIC_BASE_URL=${{ secrets.ANTHROPIC_BASE_URL }}" >> $GITHUB_ENV
+          fi
+        shell: bash
+
       - uses: anthropics/claude-code-security-review@main
         with:
           comment-pr: true
